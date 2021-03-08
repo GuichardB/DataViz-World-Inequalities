@@ -6,7 +6,7 @@ Notre dataset est donc composé comme suit :
 - 13 variables, de types : numériques
 - au format csv
 
-Les données sont pour le moments réparties dans 2 dossiers, un contenant tout le dataset complet raw et un autre avec les données sélectionnées et réorganisées pour la France (pour le moment séparé en 3 fichier .csv).
+Les données sont pour le moments réparties dans 2 dossiers, un contenant tout le dataset complet raw et un autre avec les données sélectionnées et réorganisées pour la France (pour le moment séparé en 3 fichiers .csv).
 
 Les données sont issues du site wid.world (World Inequality Database) qui rassemble des informations sur les inégalités de tout type dans les différents pays du monde.
 Nous avons choisi de nous concentrer sur les critères décrits ci-dessus dans la présentation des variables en sélectionnant directement sur le site parmis les indicateurs proposés.
