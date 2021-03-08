@@ -15,4 +15,5 @@ Les données sont organisées par pays dans des fichiers séparés, avec les mê
 En analysant ces données, nous souhaitons en savoir plus sur les inégalités qu'il y a dans le monde.
 Cela permettra de nous interroger sur les raisons de ces inégalités : causes environnementales, politiques, historiques etc.
 Notre étude devra être structurée et organisée pour ne pas se perdre dans la masse de données très importante que nous allons manipuler.
+En cas de difficultés trop importantes liées à la quantité de données trop importantye, nous nous concentrerons sur la France et les inégalités qu'on y trouve. 
 Il serait très intéressant de faire varier les échelles d'observation, pour regarder avec plus de détails les inégalités de certains territoires.
