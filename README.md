@@ -2,7 +2,7 @@
 
 Nous avons choisi un dataset illustrant les inégalités dans le monde, suivant plusieurs critères décrits par les variables.
 Notre dataset est donc composé comme suit :
-- xx observations
+- 73352 observations 212 années * 346 pays
 - 13 variables, de types : numériques
 - au format csv
 
