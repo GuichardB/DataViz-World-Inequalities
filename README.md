@@ -3,8 +3,8 @@
 Nous avons choisi un dataset illustrant les inégalités dans le monde, suivant plusieurs critères décrits par les variables.
 Notre dataset est donc composé comme suit :
 - xx observations
-- xx variables, de types : ..
-- au format xx
+- 13 variables, de types : numériques
+- au format csv
 
 Les données sont issues du site wid.world (World Inequality Database) qui rassemble des informations sur les inégalités de tout type dans les différents pays du monde.
 Nous avons choisi de nous concentrer sur les critères décrits ci-dessus dans la présentation des variables en sélectionnant directement sur le site parmis les indicateurs proposés.
