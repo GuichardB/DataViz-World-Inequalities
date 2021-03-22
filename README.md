@@ -1,3 +1,4 @@
+#OLD-----------------------------------------------------------------------------
 ## Données 
 
 Nous avons choisi un dataset illustrant les inégalités dans le monde, suivant plusieurs critères décrits par les variables.
@@ -20,7 +21,7 @@ Notre étude devra être structurée et organisée pour ne pas se perdre dans la
 En cas de difficultés liées à la quantité de données trop importantes, nous nous concentrerons sur la France et les inégalités qu'on y trouve. 
 Dans tous les cas, il serait très intéressant de faire varier les échelles d'observation, pour regarder avec plus de détails les inégalités de certains territoires.
 
-
+#OLD-----------------------------------------------------------------------------
 
 
 
