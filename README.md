@@ -51,8 +51,7 @@ Nous allons présenter ici les données choisies et notre plan d'analyse.
 
 - [Plan d'analyse](#plan-d-analyse)
   1. [Nos interrogations](#nos-interrogations)
-  2. [Les comparaisons](#les-comparaisons)
-  3. [Nos doutes](#nos-doutes)
+  2. [Nos doutes](#nos-doutes)
 
 ***
 ## Présentation des données 
@@ -122,25 +121,54 @@ Nous avons tester cet outil avec un premier dataset contenant toutes les donnée
 ### Les variables
 
 Les pricipales variables par pays et par années sont :
-**Average Income** (Decimal) 
-Per adult national income :
-Per adult GDP :
 
-**Income Inequality** (Decimal) 
-Top 10% share :
-Middle 40% share :
-Bottom 50% share :
-Top 1% share :
+**Per adult national income** (Decimal) : Le revenu national vise à mesurer le revenu total dont disposent les résidents d'un pays donné. Il est égal au produit intérieur brut (la valeur totale des biens et services produits sur le territoire d'un pays donné au cours d'une année donnée), moins le capital fixe utilisé dans les processus de production (par exemple, le remplacement des machines obsolètes ou l'entretien des routes), plus le revenu étranger net gagné par les résidents dans le reste du monde. L'économie nationale - au sens de la comptabilité nationale - comprend tous les secteurs domestiques, c'est-à-dire toutes les entités qui résident dans un pays donné (au sens de leur activité économique), qu'elles appartiennent au secteur privé, au secteur des entreprises, au secteur des administrations publiques. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage). Cela revient à supposer qu'il n'y a pas de partage des ressources au sein des couples.
 
-**Average Wealth** (Decimal) 
-Per adult national wealth :
-Wealth-income ratio :
+**Per adult GDP** (Decimal) : Le produit intérieur brut est la valeur totale des biens et services produits par l'économie nationale. L'économie nationale - au sens de la comptabilité nationale - comprend tous les secteurs intérieurs, c'est-à-dire toutes les entités qui résident dans un pays donné (au sens de leur activité économique), qu'elles appartiennent au secteur privé, au secteur des entreprises, au secteur des administrations publiques. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage). Cela revient à supposer qu'il n'y a pas de partage des ressources au sein des couples.
 
-**Wealth Inequality** (Decimal) 
-Top 10% share :
-Middle 40% share :
-Bottom 50% share :
-Top 1% share :
+**Income Inequality** (Decimal) :
+Le revenu national avant impôt est la somme de tous les flux de revenu personnel avant impôt revenant aux propriétaires des moyens de production, à savoir le travail et le capital, avant de prendre en compte le fonctionnement du système d'imposition/transfert, mais après avoir pris en compte le fonctionnement du système de retraite. La différence centrale entre le revenu personnel des facteurs et le revenu avant impôt est le traitement des pensions, qui sont comptabilisées sur une base de contribution par source de  revenu et sur une base de distribution par le revenu avant impôt. La population est constituée des individus âgés de plus de 20 ans. L'unité de base est l'unité fiscale définie par les administrations fiscales nationales pour mesurer l'impôt sur le revenu des personnes physiques.
 
-**United Nations SDG 10.1**
-Bottom 40% income share :
+- Top 10% share : Part des 10% supérieurs
+- Middle 40% share : Part des 40% du milieu
+- Bottom 50% share : Part des 50% inférieurs 
+- Top 1% share : Part des 1% supérieurs
+
+**Per adult national wealth** (Decimal) : La richesse nationale nette est la valeur totale des actifs (liquidités, logements, obligations, actions, etc.) détenus par l'économie nationale, moins ses dettes. L'économie nationale - au sens de la comptabilité nationale - comprend tous les secteurs domestiques, c'est-à-dire toutes les entités qui résident dans un pays donné (au sens de leur activité économique), qu'elles appartiennent au secteur privé, au secteur des entreprises, au secteur des administrations publiques. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage). Cela revient à supposer qu'il n'y a pas de partage des ressources au sein des couples.
+
+**Wealth-income ratio** (Decimal) : Le rapport richesse-revenu est la division de la richesse nationale par le revenu national.
+
+**Wealth Inequality** (Decimal) :
+Le patrimoine personnel net est la valeur totale des actifs non financiers et financiers (logement, terrains, dépôts, obligations, actions, etc.) détenus par les ménages, moins leurs dettes. . Le secteur des particuliers ou des ménages - au sens de la comptabilité nationale - comprend tous les ménages et les particuliers (y compris ceux vivant en institution), ainsi que les entreprises non constituées en société dont les comptes ne sont pas séparés de ceux des ménages qui les possèdent. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage) mais les ressources sont réparties de manière égale au sein des couples.
+
+- Top 10% share : Part des 10% supérieurs
+- Middle 40% share : Part des 40% du milieu
+- Bottom 50% share : Part des 50% inférieurs 
+- Top 1% share : Part des 1% supérieurs
+
+### Un exemple de données (Pour la France)
+
+**Year** (Année étudiée) : 2014
+
+1. **Per adult national income** : 206741.8612 (EUR)
+2. **Per adult GDP** : 40031.5172 (EUR)
+3. **Income Inequality** (Top 10% share) : 0.3109 (part)
+4. **Income Inequality** (Middle 40% share) : 0.4649 (part)
+5. **Income Inequality** (Bottom 50% share) : 0.2243 (part)
+6. **Income Inequality** (Top 1% share) : 0.0925 (part)
+7. **Per adult national wealth** : 35541.7993 (EUR)
+8. **Wealth-income ratio** : 5.8168702126 (ratio)
+9. **Wealth Inequality** (Top 10% share) : 0.5528 (part)
+10. **Wealth Inequality** (Middle 40% share) : 0.3838 (part)
+11. **Wealth Inequality** (Bottom 50% share) : 0.0634 (part)
+12. **Wealth Inequality** (Top 1% share) : 0.2338 (part)
+
+
+## Plan d'analyse 
+***
+
+### Nos interrogations 
+
+
+### Nos doutes 
+
