@@ -176,3 +176,4 @@ Les pricipales variables par pays et par année sont :
 ### Limites du dataset 
 Notre dataset se résume à des données concernant les richesses et les revenus des populations du monde. Cependant, les inégalités se mesurent au moyen de nombreux autres facteurs de conditions de vie. Parmis elles, nous pouvont citer l'accès à l'eau potable, à l'alimentation, à l'éducation, à la santé, au logement et aux nouvelles technologies.
 L'Indice de Développement Humain (IDH) mesure ces facteurs, et il pourrait être intéressant de le confronter aux indicateurs présents dans notre dataset, toujours dans le cadre de nos recherches sur les inégalités dans le monde. En effet, pays riche n'est pas toujours synonyme de pays développé.
+Enfin, il faudra savoir tirer des conclusions quant aux causes de ces inégalités, qui peuvent être de natures différentes que celles exposées dans notre dataset : raisons historiques, environnementales, politiques etc.
