@@ -51,7 +51,7 @@ Les fichers WID_data_XX.csv pour chaque pays qui contiennent chacun 7 variables 
 
 * percentile: WID code pour les pourcentages (détaillés plus loin)
 
-* year: l'année de cette donnée
+* year: l'année de cette donnée (de 1800 à 2019)
 
 * value: la valeur de cette donnée
 
@@ -130,12 +130,25 @@ Les pricipales variables par pays et par année sont :
 ## Plan d'analyse 
 ***
 
-### Nos interrogations 
-* comment évolue la corrélation entre les revenus des populations du monde (income) avec leur richesse (wealth) ?
-* à quel degré sont corrélés ces deux indicateurs en fonction des groupes de populations sélectionnés ?
-* comment peut on interpréter le PIB et le revenu national et comment évolue leur lien ?
-* en choisissant deux pays diamétralement opposés sur UN critère, quelle est leur situation sur d'autres critères ?
-* en ajoutant d'autres variables tel que la taille de la population, la part de la population salariée etc, comment interpréter les résultats de la confrontation avec les richesses du pays etc.
+### Nos interrogations générales
+* Y a-t-il une classe sociale parmis laquelle les inégalités de richesse et de revenus sont plus présentes ?
+* Quels sont les pays qui comportent le moins/le plus d'inégalités parmi leur population ?
+* Y a-t-il des régions du monde où les inégalités sont globalement plus/moins présentes que les autres ?
+* Quels sont les pays qui ont le meilleur/le pire rapport richesse-revenu ?
+* Y a-t-il une similitude entre les pays qui comportent le plus/le moins d'inégalités ?
+* Certains pays ont-ils connu une augmentation/diminution significative de leurs richesses et leurs revenus ? 
+* Certains pays ont-ils connu une baisse/une hausse conséquente des inégalités d'une certaine classe sociale ? Si oui, pourquoi ?
+* D'une manière générale, comment ont évolué les inégalités et les richesses dans le monde depuis 1800 ? Voit-on des augmentations importantes aux années correspondantes aux révolution industrielles ?
+* Comment les richesses des pays ont-elles évolués entre 1800 et 1900 ?
+* Comment les richesses des pays ont-elles évolués entre 1900 et 2000 ?
+* Comment les richesses des pays ont-elles évolués entre 2000 et 2019 ?
+
+### Les interrogations en comparant plusieurs variables
+* Comment évolue la corrélation entre les revenus des populations du monde (income) avec leur richesse (wealth) ?
+* A quel degré sont corrélés ces deux indicateurs en fonction des groupes de populations sélectionnés ?
+* Comment peut-on interpréter le PIB et le revenu national et comment évolue leur lien ?
+* En choisissant deux pays diamétralement opposés sur UN critère, quelle est leur situation sur d'autres critères ?
+* En ajoutant d'autres variables tel que la taille de la population, la part de la population salariée etc, comment interpréter les résultats de la confrontation avec les richesses du pays etc.
 
 ### Limites du dataset 
 Notre dataset se résume à des données concernant les richesses et les revenus des populations du monde. Cependant, les inégalités se mesurent au moyen de nombreux autres facteurs de conditions de vie. Parmis elles, nous pouvont citer l'accès à l'eau potable, à l'alimentation, à l'éducation, à la santé, au logement et aux nouvelles technologies.
