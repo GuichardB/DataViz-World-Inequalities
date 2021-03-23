@@ -167,7 +167,12 @@ Les pricipales variables par pays et par année sont :
 ***
 
 ### Nos interrogations 
-
+* comment évolue la corrélation entre les revenus des populations du monde (income) avec leur richesse (wealth) ?
+* à quel degré sont corrélés ces deux indicateurs en fonction des groupes de populations sélectionnés ?
+* comment peut on interpréter le PIB et le revenu national et comment évolue leur lien ?
+* en choisissant deux pays diamétralement opposés sur UN critère, quelle est leur situation sur d'autres critères ?
+* en ajoutant d'autres variables tel que la taille de la population, la part de la population salariée etc, comment interpréter les résultats de la confrontation avec les richesses du pays etc.
 
 ### Limites du dataset 
-
+Notre dataset se résume à des données concernant les richesses et les revenus des populations du monde. Cependant, les inégalités se mesurent au moyen de nombreux autres facteurs de conditions de vie. Parmis elles, nous pouvont citer l'accès à l'eau potable, à l'alimentation, à l'éducation, à la santé, au logement et aux nouvelles technologies.
+L'Indice de Développement Humain (IDH) mesure ces facteurs, et il pourrait être intéressant de le confronter aux indicateurs présents dans notre dataset, toujours dans le cadre de nos recherches sur les inégalités dans le monde. En effet, pays riche n'est pas toujours synonyme de pays développé.
