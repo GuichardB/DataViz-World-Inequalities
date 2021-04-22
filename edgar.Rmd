@@ -1,0 +1,28 @@
+---
+title: "Edgar"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+world_region_data <- read_delim("data/World_Region_Data/world_region_data.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+```
+
+## Visualise dataset
+```{r}
+colnames(world_region_data)
+
+```
+
+```{r}
+# Nuage de points simples
+ggplot(world_region_data) + geom_point(aes(x=Year, y=WorldNI))+ geom_point(aes(x=Year, y=WorldGDP),color="red")
+```

@@ -1,16 +1,4 @@
-Year;"anninc_pall_992_i_WO
-World
-National income
-Total population | average income or wealth | adults | individual |  | ppp | constant (2019)
-";"agdpro_pall_992_i_WO
-World
-Gross domestic product
-Total population | average income or wealth | adults | individual |  | ppp | constant (2019)
-";"sptinc_p0p40_z_WO
-World
-Pre-tax national income
-Bottom 40% | share | adults | equal split
-";"anninc_pall_992_i_QB
+Year;"WorldNI";"WorldGDP";"WorldPTNIB40";"anninc_pall_992_i_QB
 Africa
 National income
 Total population | average income or wealth | adults | individual |  | ppp | constant (2019)
