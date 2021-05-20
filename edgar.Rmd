@@ -15,6 +15,10 @@ library(tidyverse)
 world_region_data <- read_delim("data/World_Region_Data/world_region_data.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
 ```
+```{r}
+world_region_data2 <- read_delim("data/World_Region_Data/world_region_data2.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+```
 
 ## Visualise dataset
 ```{r}
