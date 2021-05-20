@@ -24,5 +24,5 @@ colnames(world_region_data)
 
 ```{r}
 # Nuage de points simples
-ggplot(world_region_data) + geom_point(aes(x=Year, y=WorldNI))+ geom_point(aes(x=Year, y=WorldGDP),color="red")
+ggplot(world_region_data) + geom_point(aes(x=Year, y=WorldNI))+ geom_point(aes(x=Year, y=AfricaNI),color="orange") + geom_point(aes(x=Year, y=AsiaNI),color="red")+ geom_point(aes(x=Year, y=AmericasNI),color="blue")
 ```
