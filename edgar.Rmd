@@ -38,6 +38,10 @@ dataset <- tibble(dataset)
 NIdataset <- dataset %>% select("Year", ends_with("NI"))
 GDPdataset <- dataset %>% select("Year", ends_with("GDP"))
 PTNIB40dataset <- dataset %>% select("Year", ends_with("PTNIB40"))
+PTNIB50dataset <- dataset %>% select("Year", ends_with("PTNIB50"))
+PTNIT1dataset <- dataset %>% select("Year", ends_with("PTNIT1"))
+PTNIT10dataset <- dataset %>% select("Year", ends_with("PTNIT10"))
+PTNIM40dataset <- dataset %>% select("Year", ends_with("PTNIM40"))
 ```
 
 ## Visualisation rapide des données
