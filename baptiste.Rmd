@@ -14,6 +14,7 @@ library(tidyverse)
 library(ggplot2)
 library(dplyr)
 library(reshape2)
+library(ggthemes)
 ```
 
 ## Import des données
@@ -39,7 +40,6 @@ dataset <- tibble(dataset)
 
 ```{r}
 NIdataset <- dataset %>% select("Year", ends_with("NI"))
-rename(NIdataset, "Western Europe"=WesternEuropeNI)
 GDPdataset <- dataset %>% select("Year", ends_with("GDP"))
 PTNIB40dataset <- dataset %>% select("Year", ends_with("PTNIB40"))
 PTNIB50dataset <- dataset %>% select("Year", ends_with("PTNIB50"))
@@ -50,22 +50,76 @@ PTNIM40dataset <- dataset %>% select("Year", ends_with("PTNIM40"))
 
 ## Visualisation rapide des données
 ```{r}
-head(NIdataset)
+head(PTNIB40dataset)
 
 ```
 
 ## Tests de graphiques généraux
 
 ```{r}
+# Traitement du dataset PTNIT10 et PTNIB40
 newdataset <- PTNIT10dataset %>% rename("Western Europe"=WesternEuropePTNIT10, Asia=AsiaPTNIT10, "Eastern Europe"=EasternEuropePTNIT10, "Northern America"=NorthernAmericaPTNIT10, Oceania=OceaniaPTNIT10, "Latin America"=LatinAmericaPTNIT10, Africa=AfricaPTNIT10) %>%
 melt(id.vars="Year") %>%
-filter(variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")
+filter(variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
+mutate(value_in_percent = value*100)
 
-# Part des Top 10% de la population dans le revenu national 
+newdataset2 <- PTNIB50dataset %>% rename("Western Europe"=WesternEuropePTNIB50, Asia=AsiaPTNIB50, "Eastern Europe"=EasternEuropePTNIB50, "Northern America"=NorthernAmericaPTNIB50, Oceania=OceaniaPTNIB50, "Latin America"=LatinAmericaPTNIB50, Africa=AfricaPTNIB50) %>%
+melt(id.vars="Year") %>%
+filter(variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa") %>%
+mutate(value_in_percent = value*100)
+
+
+newdataset3 <- PTNIT1dataset %>% rename("Western Europe"=WesternEuropePTNIT1, Asia=AsiaPTNIT1, "Eastern Europe"=EasternEuropePTNIT1, "Northern America"=NorthernAmericaPTNIT1, Oceania=OceaniaPTNIT1, "Latin America"=LatinAmericaPTNIT1, Africa=AfricaPTNIT1) %>%
+melt(id.vars="Year") %>%
+filter(variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
+mutate(value_in_percent = value*100)
+
+```
+
+
+```{r}
+
+# Part des Top 10% de la population dans le revenu national en 2019
 newdataset %>% filter(Year == "2019") %>%
-ggplot(aes(x=variable, y=value, fill=variable)) + geom_bar(stat="identity") + xlab("Régions du monde") + ylab("Part du revenu national des 10% les plus riches")
+ggplot(aes(x= reorder(variable, -value), y=value_in_percent, fill=variable)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(value_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Top 10% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip() +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 12))
+
+```
 
 
-#Evolution de la part du revenu national des 10% les plus riches, de 1980 à 2019
-newdataset %>% ggplot(aes(x=Year, y=value, group = variable, color = variable))+geom_line()
+```{r}
+#Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019
+newdataset %>% ggplot(aes(x=Year, y=value_in_percent, group = variable, color = variable))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+
+```
+
+
+
+```{r}
+
+# Part des Bottom 50% de la population dans le revenu national en 2019
+newdataset2 %>% filter(Year == "2019") %>%
+ggplot(aes(x= reorder(variable, -value), y=value_in_percent, fill=variable)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(value_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Bottom 50% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip()  +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 2.5))
+
+```
+
+```{r}
+#Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
+newdataset2 %>% ggplot(aes(x=Year, y=value_in_percent, group = variable, color = variable))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+
+```
+
+
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Amérique du Nord, de 1980 à 2019
+dataset %>% select("Year", "NorthernAmericaPTNIT1", "NorthernAmericaPTNIB50") %>% mutate(Top1=NorthernAmericaPTNIT1*100) %>% mutate(Bottom50=NorthernAmericaPTNIB50*100) %>%
+ggplot(aes(x=Year))+geom_line(aes(y=Top1), color="red") +geom_line(aes(y=Bottom50), color="blue") + labs(title="Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Amérique du Nord, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+
+```
+
+
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Europe de l'Ouest, de 1980 à 2019
+dataset %>% select("Year", "WesternEuropePTNIT1", "WesternEuropePTNIB50") %>% mutate(Top1=WesternEuropePTNIT1*100) %>% mutate(Bottom50=WesternEuropePTNIB50*100) %>%
+ggplot(aes(x=Year))+geom_line(aes(y=Top1), color="red") +geom_line(aes(y=Bottom50), color="blue") + labs(title="Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Europe de l'Ouest, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+
 ```
