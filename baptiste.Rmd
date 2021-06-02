@@ -39,6 +39,7 @@ dataset <- tibble(dataset)
 
 ```{r}
 NIdataset <- dataset %>% select("Year", ends_with("NI"))
+rename(NIdataset, "Western Europe"=WesternEuropeNI)
 GDPdataset <- dataset %>% select("Year", ends_with("GDP"))
 PTNIB40dataset <- dataset %>% select("Year", ends_with("PTNIB40"))
 PTNIB50dataset <- dataset %>% select("Year", ends_with("PTNIB50"))
@@ -56,12 +57,15 @@ head(NIdataset)
 ## Tests de graphiques généraux
 
 ```{r}
+newdataset <- PTNIT10dataset %>% rename("Western Europe"=WesternEuropePTNIT10, Asia=AsiaPTNIT10, "Eastern Europe"=EasternEuropePTNIT10, "Northern America"=NorthernAmericaPTNIT10, Oceania=OceaniaPTNIT10, "Latin America"=LatinAmericaPTNIT10, Africa=AfricaPTNIT10) %>%
+melt(id.vars="Year") %>%
+filter(variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")
+
 # Part des Top 10% de la population dans le revenu national 
-PTNIT10dataset %>% filter(Year == "2019") %>% melt(id.vars="Year") %>% filter(variable=="WesternEuropePTNIT10"|variable=="AsiaPTNIT10"|variable=="EasternEuropePTNIT10"|variable=="NorthernAmericaPTNIT10"|variable=="OceaniaPTNIT10"|variable=="LatinAmericaPTNIT10"|variable=="AfricaPTNIT10") %>%
+newdataset %>% filter(Year == "2019") %>%
 ggplot(aes(x=variable, y=value, fill=variable)) + geom_bar(stat="identity") + xlab("Régions du monde") + ylab("Part du revenu national des 10% les plus riches")
 
 
 #Evolution de la part du revenu national des 10% les plus riches, de 1980 à 2019
-PTNIT10dataset %>% melt(id.vars="Year") %>% filter(variable=="WesternEuropePTNIT10") %>%
-ggplot(aes(x=Year, y=value, colour=variable)) + geom_line()
+newdataset %>% ggplot(aes(x=Year, y=value, group = variable, color = variable))+geom_line()
 ```
