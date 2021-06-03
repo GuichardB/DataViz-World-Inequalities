@@ -11,6 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r message = FALSE}
 library(tidyverse)
+library(reshape2)
+library(ggthemes)
+
 ```
 
 ## Import des données
@@ -27,9 +30,7 @@ world_region_data2 <- read_delim("data/World_Region_Data/world_region_data2.csv"
 ## Agrégation des 2 datasets
 
 ```{r}
-merged <- merge(x = world_region_data, y = world_region_data2, by = "Year", all = TRUE)
-dataset <- data.frame(merged)
-dataset <- tibble(dataset)
+dataset <- merge(x = world_region_data, y = world_region_data2, by = "Year", all = TRUE)
 ```
 
 ## Création de sous-datasets pour séparer les données par indicateurs
@@ -41,32 +42,118 @@ PTNIB40dataset <- dataset %>% select("Year", ends_with("PTNIB40"))
 PTNIB50dataset <- dataset %>% select("Year", ends_with("PTNIB50"))
 PTNIT1dataset <- dataset %>% select("Year", ends_with("PTNIT1"))
 PTNIT10dataset <- dataset %>% select("Year", ends_with("PTNIT10"))
+PTNIM40dataset <- dataset %>% select("Year", ends_with("PTNIM40"))
 ```
 
 
 ```{r}
-PTNIM40dataset <- dataset %>% select("Year", ends_with("PTNIM40"))
+# Traitement du dataset PTNIT10 et PTNIB40
+tempdataset <- PTNIT10dataset %>% rename("World"=WorldPTNIT10,"Western Europe"=WesternEuropePTNIT10, Asia=AsiaPTNIT10, "Eastern Europe"=EasternEuropePTNIT10, "Northern America"=NorthernAmericaPTNIT10, Oceania=OceaniaPTNIT10, "Latin America"=LatinAmericaPTNIT10, Africa=AfricaPTNIT10) %>%
+melt(id.vars="Year") %>%
+filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
+mutate(PTNIT10_in_percent = value*100)%>%
+subset (select = -value)
+
+tempdataset2 <- PTNIM40dataset %>% rename("World"=WorldPTNIM40,"Western Europe"=WesternEuropePTNIM40, Asia=AsiaPTNIM40, "Eastern Europe"=EasternEuropePTNIM40, "Northern America"=NorthernAmericaPTNIM40, Oceania=OceaniaPTNIM40, "Latin America"=LatinAmericaPTNIM40, Africa=AfricaPTNIM40) %>%
+melt(id.vars="Year") %>%
+filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa") %>%
+mutate(PTNIM40_in_percent = value*100)%>%
+subset (select = -value)
+
+
+tempdataset3 <- PTNIB50dataset %>% rename("World"=WorldPTNIB50,"Western Europe"=WesternEuropePTNIB50, Asia=AsiaPTNIB50, "Eastern Europe"=EasternEuropePTNIB50, "Northern America"=NorthernAmericaPTNIB50, Oceania=OceaniaPTNIB50, "Latin America"=LatinAmericaPTNIB50, Africa=AfricaPTNIB50) %>%
+melt(id.vars="Year") %>%
+filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa") %>%
+mutate(PTNIB50_in_percent = value*100)%>%
+subset (select = -value)
+
+tempdataset4 <- PTNIT1dataset %>% rename("World"=WorldPTNIT1,"Western Europe"=WesternEuropePTNIT1, Asia=AsiaPTNIT1, "Eastern Europe"=EasternEuropePTNIT1, "Northern America"=NorthernAmericaPTNIT1, Oceania=OceaniaPTNIT1, "Latin America"=LatinAmericaPTNIT1, Africa=AfricaPTNIT1) %>%
+melt(id.vars="Year") %>%
+filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
+mutate(PTNIT1_in_percent = value*100)%>%
+subset (select = -value)
+
+tempdataset5 <- NIdataset %>% rename("World"=WorldNI,"Western Europe"=WesternEuropeNI, Asia=AsiaNI, "Eastern Europe"=EasternEuropeNI, "Northern America"=NorthernAmericaNI, Oceania=OceaniaNI, "Latin America"=LatinAmericaNI, Africa=AfricaNI) %>%
+melt(id.vars="Year") %>%
+filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
+rename(NI=value)
+
+tempdataset6 <- GDPdataset %>% rename("World"=WorldGDP,"Western Europe"=WesternEuropeGDP, Asia=AsiaGDP, "Eastern Europe"=EasternEuropeGDP, "Northern America"=NorthernAmericaGDP, Oceania=OceaniaGDP, "Latin America"=LatinAmericaGDP, Africa=AfricaGDP) %>%
+melt(id.vars="Year") %>%
+filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
+rename(GDP=value)
+```
+
+```{r}
+final_dataset <- merge(x = tempdataset, y = tempdataset2, by = c("Year", "variable"), all = TRUE)
+final_dataset <- merge(x = final_dataset, y = tempdataset3, by = c("Year", "variable"), all = TRUE)
+final_dataset <- merge(x = final_dataset, y = tempdataset4, by = c("Year", "variable"), all = TRUE)
+final_dataset <- merge(x = final_dataset, y = tempdataset5, by = c("Year", "variable"), all = TRUE)
+final_dataset <- merge(x = final_dataset, y = tempdataset6, by = c("Year", "variable"), all = TRUE)%>%
+rename(region=variable)
 ```
 
 ## Visualisation rapide des données
 ```{r}
-head(NIdataset)
-
-```
-
-## Test de graphique très basique
-
-```{r}
-# Nuage de points simples
-ggplot(dataset) + geom_point(aes(x=Year, y=WorldNI))+ geom_point(aes(x=Year, y=AfricaNI),color="orange") + geom_point(aes(x=Year, y=AsiaNI),color="red")+ geom_point(aes(x=Year, y=AmericasNI),color="blue")
+head(final_dataset)
 ```
 ```{r}
-# Part des Top 10% de la population dans le revenu national 
-PTNIT10dataset %>% filter(Year == "2019") %>% melt(id.vars="Year") %>% filter(variable=="WesternEuropePTNIT10"|variable=="AsiaPTNIT10"|variable=="EasternEuropePTNIT10"|variable=="NorthernAmericaPTNIT10"|variable=="OceaniaPTNIT10"|variable=="LatinAmericaPTNIT10"|variable=="AfricaPTNIT10") %>%
-ggplot(aes(x=variable, y=value, fill=variable)) + geom_bar(stat="identity") + xlab("Régions du monde") + ylab("Part du revenu national des 10% les plus riches")
-
-
-#Evolution de la part du revenu national des 10% les plus riches, de 1980 à 2019PTNIT10dataset %>% 
-ggplot(PTNIT10dataset)+geom_line(aes(x=Year, y=WesternEuropePTNIT10, group=1))
+final_dataset %>% filter(region == "World") %>%
+ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent, color="Top 1%"))+geom_line(aes(y=PTNIB50_in_percent, color="Bot 50%")) + labs(title="Evolution de la part du revenu national des Top 1% et Bot 50% de 1980 à 2019", x="Année", y = "Part du revenu national (%)",color = "Classes" )+ scale_x_continuous(limits = c(1980,2019), expand = c(0, 0)) + scale_y_continuous(limits = c(5,25), expand = c(0, 0))
 ```
+```{r}
+final_dataset %>% filter(region == "World") %>%
+ggplot(aes(x=Year))+geom_bar(aes(fill=condition))
+```
+
+```{r}
+```
+
+
+```{r}
+```
+
+```{r}
+library(rworldmap)
+library(rgeos)
+library(maptools)
+library(cleangeo)  
+require(maps)
+
+newdatasetMap <- PTNIT1dataset %>% rename("FRA"=WesternEuropePTNIT1, "CHN"=AsiaPTNIT1, "UKR"=EasternEuropePTNIT1, "USA"=NorthernAmericaPTNIT1, "AUS"=OceaniaPTNIT1, "VEN"=LatinAmericaPTNIT1, "TGO"=AfricaPTNIT1) %>%
+melt(id.vars="Year") %>%
+filter(variable=="FRA"|variable=="Asia"|variable=="UKR"|variable=="USA"|variable=="AUS"|variable=="VEN"|variable=="TGO")%>%
+mutate(value_in_percent = value*100)%>%
+rename(region=variable) 
+
+regiontop1 <- newdatasetMap %>% filter(Year == "2019")
+
+world_map <- map_data("world")
+
+regiontop1.map <- left_join(regiontop1, world_map, by = "region")
+
+ggplot(regiontop1.map, aes(map_id = region, fill = value))+
+  geom_map(map = regiontop1.map,  color = "white")+
+  expand_limits(x = regiontop1.map$long, y = regiontop1.map$lat)+
+  scale_fill_viridis_c(option = "C")
+```
+
+```{r}
+mapByRegion(inFile=regiontop1
+		        ,nameDataColumn="value"
+		        ,joinCode="ISO3"
+		        ,nameJoinColumn="region"
+		        ,regionType="Stern"
+	         	,FUN='mean'
+	         	)
+```
+
+```{r}
+#get coarse resolution world from rworldmap
+sPDF <- getMap()  
+#mapCountries using the 'continent' attribute  
+mapCountryData(sPDF, nameColumnToPlot='REGION')
+
+```
+
 
