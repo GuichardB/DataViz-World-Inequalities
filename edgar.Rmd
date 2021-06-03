@@ -99,11 +99,17 @@ head(final_dataset)
 ```
 ```{r}
 final_dataset %>% filter(region == "World") %>%
-ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent, color="Top 1%"))+geom_line(aes(y=PTNIB50_in_percent, color="Bot 50%")) + labs(title="Evolution de la part du revenu national des Top 1% et Bot 50% de 1980 à 2019", x="Année", y = "Part du revenu national (%)",color = "Classes" )+ scale_x_continuous(limits = c(1980,2019), expand = c(0, 0)) + scale_y_continuous(limits = c(5,25), expand = c(0, 0))
+ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent, color="Top 1%"))+geom_line(aes(y=PTNIB50_in_percent, color="Bot 50%")) + labs(title="Evolution de la part du revenu national des Top 1% et Bot 50% de 1980 à 2019", x="Années", y = "Part du revenu national (%)",color = "Classes" )+ scale_x_continuous(limits = c(1980,2019), expand = c(0, 0)) + scale_y_continuous(limits = c(5,25), expand = c(0, 0))
 ```
 ```{r}
-final_dataset %>% filter(region == "World") %>%
-ggplot(aes(x=Year))+geom_bar(aes(fill=condition))
+world <- filter(final_dataset, region== "World")
+dfm <- melt(world[,c('Year','PTNIT10_in_percent','PTNIM40_in_percent','PTNIB50_in_percent')],id.vars =1)
+
+dfm%>%
+ggplot(aes(x=Year))+geom_col(aes(y=value, fill=variable))+ scale_fill_discrete(name = "Classes", labels = c("Top 10%", "Mid 40%", "Bot 50%"))+
+labs(title="Evolution de la part du revenu national de 1980 à 2019", x="Années", y = "Part du revenu national (%)" )+
+theme(axis.text.y=element_blank(),
+      axis.ticks.y=element_blank())
 ```
 
 ```{r}
