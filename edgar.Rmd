@@ -90,7 +90,10 @@ final_dataset <- merge(x = final_dataset, y = tempdataset3, by = c("Year", "vari
 final_dataset <- merge(x = final_dataset, y = tempdataset4, by = c("Year", "variable"), all = TRUE)
 final_dataset <- merge(x = final_dataset, y = tempdataset5, by = c("Year", "variable"), all = TRUE)
 final_dataset <- merge(x = final_dataset, y = tempdataset6, by = c("Year", "variable"), all = TRUE)%>%
-rename(region=variable)
+rename(region=variable)%>%
+mutate(Private_capital = (GDP - NI)/GDP)%>%
+mutate(Public_capital = (NI/GDP))
+
 ```
 
 ## Visualisation rapide des données
@@ -103,7 +106,7 @@ ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent, color="Top 1%"))+geom_lin
 ```
 ```{r}
 world <- filter(final_dataset, region== "World")
-dfm <- melt(world[,c('Year','PTNIT10_in_percent','PTNIM40_in_percent','PTNIB50_in_percent')],id.vars =1)
+world <- melt(world[,c('Year','PTNIT10_in_percent','PTNIM40_in_percent','PTNIB50_in_percent')],id.vars =1)
 
 dfm%>%
 ggplot(aes(x=Year))+geom_col(aes(y=value, fill=variable))+ scale_fill_discrete(name = "Classes", labels = c("Top 10%", "Mid 40%", "Bot 50%"))+
@@ -113,10 +116,30 @@ theme(axis.text.y=element_blank(),
 ```
 
 ```{r}
+final_dataset %>% 
+filter(region=="Africa") %>%
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
+ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()
+```
+```{r}
+final_dataset %>% 
+filter(region=="Eastern Europe") %>%
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
+ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()
 ```
 
 
 ```{r}
+final_dataset %>% 
+filter(region=="Africa") %>%
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
+ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()
+```
+```{r}
+final_dataset %>%
+filter(region=="Eastern Europe")%>%
+ggplot(aes(x=Year))+ geom_line(aes(y=Private_capital)) + geom_line(aes(y=Public_capital))
+
 ```
 
 ```{r}
