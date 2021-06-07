@@ -6,7 +6,8 @@ dashboardPage(skin="red",
     dashboardSidebar( 
         sidebarMenu(
           menuItem("Accueil", tabName = "stats", icon = icon("th")),
-          menuItem("Comparaison de region", tabName = "graphiques",icon = icon("chart-bar"))
+          menuItem("Analyse mondiale", tabName = "graph1",icon = icon("globe-europe")),
+          menuItem("Comparaison entre régions", tabName = "graph2",icon = icon("chart-bar"))
            
             
         ),
@@ -30,13 +31,19 @@ dashboardPage(skin="red",
                     
                   ),
           ),
-          tabItem(tabName = "graphiques",
+          tabItem(tabName = "graph1",
+                  h2("Analyse mondiale"),
+                  box(title = "Monde", status = "warning"
+                        ,plotOutput("plot1", height = 300)),
+                    
+          ),
+          tabItem(tabName = "graph2",
                   h2("Comparaison de 2 régions"),
                   fluidRow(
-                    box(title = "Distribution of color", status = "warning"
+                    box(title = "Région 1", status = "warning"
                         ,plotOutput("plot2", height = 300)),
                     
-                    box(title = "Distribution of color", status = "warning"
+                    box(title = "Région 2", status = "warning"
                         ,plotOutput("plot3", height = 300))
                     
                   )
