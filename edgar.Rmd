@@ -108,38 +108,116 @@ ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent, color="Top 1%"))+geom_lin
 world <- filter(final_dataset, region== "World")
 world <- melt(world[,c('Year','PTNIT10_in_percent','PTNIM40_in_percent','PTNIB50_in_percent')],id.vars =1)
 
-dfm%>%
+world%>%
 ggplot(aes(x=Year))+geom_col(aes(y=value, fill=variable))+ scale_fill_discrete(name = "Classes", labels = c("Top 10%", "Mid 40%", "Bot 50%"))+
-labs(title="Evolution de la part du revenu national de 1980 à 2019", x="Années", y = "Part du revenu national (%)" )+
+labs(title="Evolution de la part de chaque tranche dans le revenu national dans le monde", x="Années", y = "Part du revenu national (%)" )+
 theme(axis.text.y=element_blank(),
       axis.ticks.y=element_blank())
 ```
 
-```{r}
+```{r message = FALSE, warning = FALSE}
 final_dataset %>% 
-filter(region=="Africa") %>%
+filter(region=="World") %>%
 mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
-ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()
+ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de croissance du National Income dans le monde", x="Années", y = "Taux de croissance NI")
 ```
-```{r}
+
+
+
+```{r message = FALSE, warning = FALSE}
 final_dataset %>% 
 filter(region=="Eastern Europe") %>%
-mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
-ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()
-```
-
-
-```{r}
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempEE
+final_dataset %>% 
+filter(region=="Western Europe") %>%
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempWE
+final_dataset %>% 
+filter(region=="Asia") %>%
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAs
 final_dataset %>% 
 filter(region=="Africa") %>%
-mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
-ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAf
+final_dataset %>% 
+filter(region=="Oceania") %>%
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempOc
+final_dataset %>% 
+filter(region=="Latin America") %>%
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempLA
+final_dataset %>% 
+filter(region=="Northern America") %>%
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempNA
+
+ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance du National Income", x="Années", y = "Taux de croissance NI",color = "Régions" )
 ```
+```{r message = FALSE, warning = FALSE}
+final_dataset %>% 
+filter(region=="World") %>%
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
+ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de l'enrichissement des Top 1% dans le monde", x="Années", y = "Taux de croissance de la part dans le revenu nationa")
+```
+
+```{r  message = FALSE, warning = FALSE}
+final_dataset %>% 
+filter(region=="Eastern Europe") %>%
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempEE
+final_dataset %>% 
+filter(region=="Western Europe") %>%
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempWE
+final_dataset %>% 
+filter(region=="Asia") %>%
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAs
+final_dataset %>% 
+filter(region=="Africa") %>%
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAf
+final_dataset %>% 
+filter(region=="Oceania") %>%
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempOc
+final_dataset %>% 
+filter(region=="Latin America") %>%
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempLA
+final_dataset %>% 
+filter(region=="Northern America") %>%
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempNA
+
+ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance de l'enrichissement des Top 1%", x="Années", y = "Taux de croissance de la part dans le revenu national",color = "Régions" )
+```
+```{r message = FALSE, warning = FALSE}
+final_dataset %>% 
+filter(region=="World") %>%
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
+ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de l'enrichissement des Bottom 50% dans le monde", x="Années", y = "Taux de croissance de la part dans le revenu nationa")
+```
+
+```{r message = FALSE, warning = FALSE}
+final_dataset %>% 
+filter(region=="Eastern Europe") %>%
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempEE
+final_dataset %>% 
+filter(region=="Western Europe") %>%
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempWE
+final_dataset %>% 
+filter(region=="Asia") %>%
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAs
+final_dataset %>% 
+filter(region=="Africa") %>%
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAf
+final_dataset %>% 
+filter(region=="Oceania") %>%
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempOc
+final_dataset %>% 
+filter(region=="Latin America") %>%
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempLA
+final_dataset %>% 
+filter(region=="Northern America") %>%
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempNA
+
+ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance de l'enrichissement des Bottom 50%", x="Années", y = "Taux de croissance de la part dans le revenu national",color = "Régions" )
+```
+
 ```{r}
 final_dataset %>%
-filter(region=="Eastern Europe")%>%
+filter(region=="Africa")%>%
 ggplot(aes(x=Year))+ geom_line(aes(y=Private_capital)) + geom_line(aes(y=Public_capital))
-
 ```
 
 ```{r}
