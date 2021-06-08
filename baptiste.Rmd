@@ -54,10 +54,6 @@ head(dataset)
 ```
 
 ```{r}
-test <- dataset %>% melt(id.vars="Year")
-head(test)
-
-
 PatGouvdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoineGouvernement"))
 PatPrivdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoinePrivé"))
 PIBdataset <- world_country_data1 %>% select("Year", ends_with("PIB"))
@@ -72,8 +68,6 @@ PatTop10 <- dataset %>% select("Year", ends_with("Patrimoine.Top10.."))
 PatMedium40 <- dataset %>% select("Year", ends_with("Patrimoine.Medium40.."))
 PatBottom50 <- dataset %>% select("Year", ends_with("Patrimoine.Bottom50.."))
 PatTop1 <- dataset %>% select("Year", ends_with("Patrimoine.Top1.."))
-
-head(RevNatBottom50dataset)
 
 tempdataset <- PatGouvdataset %>% rename("France"=France_PatrimoineGouvernement,"Afrique du Sud"=AfriqueSud_PatrimoineGouvernement, "Australie"=Australie_PatrimoineGouvernement, "Canada"=Canada_PatrimoineGouvernement, "Chine"=Chine_PatrimoineGouvernement, "Danemark"=Danemark_PatrimoineGouvernement, "Inde"=Inde_PatrimoineGouvernement, "Royaume-Uni"=RU_PatrimoineGouvernement, "Japon"=Japon_PatrimoineGouvernement, "Mexique"=Mexique_PatrimoineGouvernement, "Russie"=Russie_PatrimoineGouvernement, "Etats-Unis"=US_PatrimoineGouvernement) %>%
 melt(id.vars="Year") %>%
