@@ -156,6 +156,11 @@ final_dataset <- merge(x = final_dataset, y = tempdataset14, by = c("Year", "var
 final_dataset <- final_dataset %>% rename(Region=variable)
   
 head(final_dataset)
+
+```
+```{r}
+
+write.csv(final_dataset,"data/final_dataset.csv", row.names = FALSE)
 ```
 
 

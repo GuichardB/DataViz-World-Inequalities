@@ -242,7 +242,7 @@ ggplot(aes(x= reorder(Region, -PTNIT10_in_percent), y=PTNIT10_in_percent, fill=R
 
 ```{r warning=FALSE}
 #Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019
-final_region_dataset %>% filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+final_region_dataset %>% filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)") 
 
 ```
 
@@ -258,7 +258,7 @@ ggplot(aes(x= reorder(Region, -PTNIB50_in_percent), y=PTNIB50_in_percent, fill=R
 
 ```{r warning=FALSE}
 #Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
-final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)") 
 
 ```
 
@@ -267,6 +267,30 @@ final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_
 #Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Amérique du Nord, de 1980 à 2019
 final_region_dataset %>% filter(Region == "Northern America") %>%
 ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent), color="red") +geom_line(aes(y=PTNIB50_in_percent), color="blue") + labs(title="Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Amérique du Nord, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+
+```
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs aux Etats-Unis, de 1980 à 2019
+final_country_dataset %>% filter(Pays == "Etats-Unis", Year >= 1980) %>%
+ggplot(aes(x=Year))+geom_line(aes(y=RevenuNationalTop1), color="red") +geom_line(aes(y=RevenuNationalBottom50), color="blue") + labs(title="Etats-Unis", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+
+```
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
+final_country_dataset %>% filter(Pays == "France", Year >= 1980) %>%
+ggplot(aes(x=Year))+geom_line(aes(y=RevenuNationalTop1), color="red") +geom_line(aes(y=RevenuNationalBottom50), color="blue") + labs(title="France", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+
+```
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
+final_country_dataset %>% filter(Pays == "France", Year >= 1980) %>%
+ggplot(aes(x=Year))+geom_line(aes(y=PatrimoineTop1), color="red") +geom_line(aes(y=PatrimoineBottom50), color="blue") + labs(title="France", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+
+```
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
+final_country_dataset %>% filter(Pays == "Etats-Unis", Year >= 1980) %>%
+ggplot(aes(x=Year))+geom_line(aes(y=PatrimoineTop1), color="red") +geom_line(aes(y=PatrimoineBottom50), color="blue") + labs(title="Etats-Unis", x="Année", y = "Part du patrimoine (%)") + theme_wsj()+ scale_colour_wsj("colors6")
 
 ```
 
