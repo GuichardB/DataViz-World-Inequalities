@@ -26,15 +26,83 @@ world_region_data <- read_delim("data/World_Region_Data/world_region_data.csv",
 ```{r message = FALSE}
 world_region_data2 <- read_delim("data/World_Region_Data/world_region_data2.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
+
+world_country_data1 <- read_delim("data/World_Country_Data/world_country_data1.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+
+world_country_data2 <- read_delim("data/World_Country_Data/world_country_data2.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
+
+world_country_data3 <- read_delim("data/World_Country_Data/world_country_data3.csv", 
+    ";", escape_double = FALSE, trim_ws = TRUE)
 ```
 
 ## Agrégation des 2 datasets
 
 ```{r}
 merged <- merge(x = world_region_data, y = world_region_data2, by = "Year", all = TRUE)
-dataset <- data.frame(merged)
+old_dataset <- data.frame(merged)
+old_dataset <- tibble(dataset)
+
+
+merged1 <- merge(x = world_country_data1, y = world_country_data2, by = "Year", all = TRUE)
+merged2 <- merge(x = merged1, y = world_country_data3, by = "Year", all = TRUE)
+dataset <- data.frame(merged2)
 dataset <- tibble(dataset)
+
+head(dataset)
 ```
+
+```{r}
+test <- dataset %>% melt(id.vars="Year")
+head(test)
+
+
+PatGouvdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoineGouvernement"))
+PatPrivdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoinePrivé"))
+PIBdataset <- world_country_data1 %>% select("Year", ends_with("PIB"))
+RatioPatRevdataset <- world_country_data1 %>% select("Year", ends_with("RatioPatrimoineRevenu"))
+RevNatdataset <- world_country_data2 %>% select("Year", ends_with("RevenuNational"))
+RevNatTop10dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Top10%)"))
+RevNatBottom50dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Bottom50%)"))
+RevNatTop1dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Top1%)"))
+RevNatMedium40dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Medium40%)"))
+CapNatdataset <- world_country_data3 %>% select("Year", ends_with("CapitalNational"))
+PatTop10 <- dataset %>% select("Year", ends_with("Patrimoine.Top10.."))
+PatMedium40 <- dataset %>% select("Year", ends_with("Patrimoine.Medium40.."))
+PatBottom50 <- dataset %>% select("Year", ends_with("Patrimoine.Bottom50.."))
+PatTop1 <- dataset %>% select("Year", ends_with("Patrimoine.Top1.."))
+
+tempdataset <- PatGouvdataset %>% rename("France"=France_PatrimoineGouvernement,"Afrique du Sud"=AfriqueSud_PatrimoineGouvernement, "Australie"=Australie_PatrimoineGouvernement, "Canada"=Canada_PatrimoineGouvernement, "Chine"=Chine_PatrimoineGouvernement, "Danemark"=Danemark_PatrimoineGouvernement, "Inde"=Inde_PatrimoineGouvernement, "Royaume-Uni"=RU_PatrimoineGouvernement, "Japon"=Japon_PatrimoineGouvernement, "Mexique"=Mexique_PatrimoineGouvernement, "Russie"=Russie_PatrimoineGouvernement, "Etats-Unis"=US_PatrimoineGouvernement) %>%
+melt(id.vars="Year") %>%
+mutate(PatrimoineGouvernement = value)%>%
+subset (select = -value)
+
+tempdataset2 <- PatPrivdataset %>% rename("France"=France_PatrimoinePrivé,"Afrique du Sud"=AfriqueSud_PatrimoinePrivé, "Australie"=Australie_PatrimoinePrivé, "Canada"=Canada_PatrimoinePrivé, "Chine"=Chine_PatrimoinePrivé, "Danemark"=Danemark_PatrimoinePrivé, "Inde"=Inde_PatrimoinePrivé, "Royaume-Uni"=RU_PatrimoinePrivé, "Japon"=Japon_PatrimoinePrivé, "Mexique"=Mexique_PatrimoinePrivé, "Russie"=Russie_PatrimoinePrivé, "Etats-Unis"=US_PatrimoinePrivé) %>%
+melt(id.vars="Year") %>%
+mutate(PatrimoinePrivé = value)%>%
+subset (select = -value)
+
+tempdataset3 <- PIBdataset %>% rename("France"=France_PIB,"Afrique du Sud"=AfriqueSud_PIB, "Australie"=Australie_PIB, "Canada"=Canada_PIB, "Chine"=Chine_PIB, "Danemark"=Danemark_PIB, "Inde"=Inde_PIB, "Royaume-Uni"=RU_PIB, "Japon"=Japon_PIB, "Mexique"=Mexique_PIB, "Russie"=Russie_PIB, "Etats-Unis"=US_PIB) %>%
+melt(id.vars="Year") %>%
+mutate(PIB = value)%>%
+subset (select = -value)
+
+tempdataset4 <- RatioPatRevdataset %>% rename("France"=France_RatioPatrimoineRevenu,"Afrique du Sud"=AfriqueSud_RatioPatrimoineRevenu, "Australie"=Australie_RatioPatrimoineRevenu, "Canada"=Canada_RatioPatrimoineRevenu, "Chine"=Chine_RatioPatrimoineRevenu, "Danemark"=Danemark_RatioPatrimoineRevenu, "Inde"=Inde_RatioPatrimoineRevenu, "Royaume-Uni"=RU_RatioPatrimoineRevenu, "Japon"=Japon_RatioPatrimoineRevenu, "Mexique"=Mexique_RatioPatrimoineRevenu, "Russie"=Russie_RatioPatrimoineRevenu, "Etats-Unis"=US_RatioPatrimoineRevenu) %>%
+melt(id.vars="Year") %>%
+mutate(RatioPatrimoineRevenu = value)%>%
+subset (select = -value)
+
+final_dataset <- merge(x = tempdataset, y = tempdataset2, by = c("Year", "variable"), all = TRUE)
+final_dataset <- merge(x = final_dataset, y = tempdataset3, by = c("Year", "variable"), all = TRUE)
+final_dataset <- merge(x = final_dataset, y = tempdataset4, by = c("Year", "variable"), all = TRUE)
+
+final_dataset <- final_dataset %>% rename(Region=variable)
+  
+head(final_dataset)
+```
+
+
 
 ## Création de sous-datasets pour séparer les données par indicateurs
 
