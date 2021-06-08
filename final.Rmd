@@ -19,7 +19,7 @@ library(ggthemes)
 
 ## Import des données
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 world_region_data <- read_delim("data/World_Region_Data/world_region_data.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
 
@@ -42,9 +42,12 @@ world_country_data3 <- read_delim("data/World_Country_Data/world_country_data3.c
 region_dataset <- merge(x = world_region_data, y = world_region_data2, by = "Year", all = TRUE)
 region_dataset <- data.frame(region_dataset)
 region_dataset <- tibble(region_dataset)
+rm(world_region_data,world_region_data2)
+```
 
-merged1 <- merge(x = world_country_data1, y = world_country_data2, by = "Year", all = TRUE)
-country_dataset <- merge(x = merged1, y = world_country_data3, by = "Year", all = TRUE)
+```{r}
+country_dataset <- merge(x = world_country_data1, y = world_country_data2, by = "Year", all = TRUE)
+country_dataset <- merge(x = country_dataset, y = world_country_data3, by = "Year", all = TRUE)
 country_dataset <- data.frame(country_dataset)
 country_dataset <- tibble(country_dataset)
 ```
@@ -59,11 +62,28 @@ PTNIB50dataset <- region_dataset %>% select("Year", ends_with("PTNIB50"))
 PTNIT1dataset <- region_dataset %>% select("Year", ends_with("PTNIT1"))
 PTNIT10dataset <- region_dataset %>% select("Year", ends_with("PTNIT10"))
 PTNIM40dataset <- region_dataset %>% select("Year", ends_with("PTNIM40"))
+rm(region_dataset)
 ```
 
+```{r}
+PatGouvdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoineGouvernement"))
+PatPrivdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoinePrivé"))
+PIBdataset <- world_country_data1 %>% select("Year", ends_with("PIB"))
+RatioPatRevdataset <- world_country_data1 %>% select("Year", ends_with("RatioPatrimoineRevenu"))
+RevNatdataset <- world_country_data2 %>% select("Year", ends_with("RevenuNational"))
+RevNatTop10dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Top10%)"))
+RevNatBottom50dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Bottom50%)"))
+RevNatTop1dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Top1%)"))
+RevNatMedium40dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Medium40%)"))
+CapNatdataset <- world_country_data3 %>% select("Year", ends_with("CapitalNational"))
+PatTop10 <- country_dataset %>% select("Year", ends_with("Patrimoine.Top10.."))
+PatMedium40 <- country_dataset %>% select("Year", ends_with("Patrimoine.Medium40.."))
+PatBottom50 <- country_dataset %>% select("Year", ends_with("Patrimoine.Bottom50.."))
+PatTop1 <- country_dataset %>% select("Year", ends_with("Patrimoine.Top1.."))
+rm(country_dataset,world_country_data1,world_country_data2,world_country_data3)
+```
 
 ```{r}
-# Traitement du dataset PTNIT10 et PTNIB40
 tempdataset <- PTNIT10dataset %>% rename("World"=WorldPTNIT10,"Western Europe"=WesternEuropePTNIT10, Asia=AsiaPTNIT10, "Eastern Europe"=EasternEuropePTNIT10, "Northern America"=NorthernAmericaPTNIT10, Oceania=OceaniaPTNIT10, "Latin America"=LatinAmericaPTNIT10, Africa=AfricaPTNIT10) %>%
 melt(id.vars="Year") %>%
 filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
@@ -107,25 +127,11 @@ final_region_dataset <- merge(x = final_region_dataset, y = tempdataset4, by = c
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset5, by = c("Year", "variable"), all = TRUE)
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset6, by = c("Year", "variable"), all = TRUE)%>%
 rename(Region=variable)
-
+rm(tempdataset, tempdataset2, tempdataset3,tempdataset4,tempdataset5,tempdataset6)
+rm(NIdataset,GDPdataset,PTNIT1dataset,PTNIT10dataset,PTNIM40dataset,PTNIB50dataset,PTNIB40dataset)
 ```
-## Données suplémentaires
-```{r}
-PatGouvdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoineGouvernement"))
-PatPrivdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoinePrivé"))
-PIBdataset <- world_country_data1 %>% select("Year", ends_with("PIB"))
-RatioPatRevdataset <- world_country_data1 %>% select("Year", ends_with("RatioPatrimoineRevenu"))
-RevNatdataset <- world_country_data2 %>% select("Year", ends_with("RevenuNational"))
-RevNatTop10dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Top10%)"))
-RevNatBottom50dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Bottom50%)"))
-RevNatTop1dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Top1%)"))
-RevNatMedium40dataset <- world_country_data2 %>% select("Year", ends_with("RevenuNationalPT(Medium40%)"))
-CapNatdataset <- world_country_data3 %>% select("Year", ends_with("CapitalNational"))
-PatTop10 <- country_dataset %>% select("Year", ends_with("Patrimoine.Top10.."))
-PatMedium40 <- country_dataset %>% select("Year", ends_with("Patrimoine.Medium40.."))
-PatBottom50 <- country_dataset %>% select("Year", ends_with("Patrimoine.Bottom50.."))
-PatTop1 <- country_dataset %>% select("Year", ends_with("Patrimoine.Top1.."))
 
+```{r}
 tempdataset <- PatGouvdataset %>% rename("France"=France_PatrimoineGouvernement,"Afrique du Sud"=AfriqueSud_PatrimoineGouvernement, "Australie"=Australie_PatrimoineGouvernement, "Canada"=Canada_PatrimoineGouvernement, "Chine"=Chine_PatrimoineGouvernement, "Danemark"=Danemark_PatrimoineGouvernement, "Inde"=Inde_PatrimoineGouvernement, "Royaume-Uni"=RU_PatrimoineGouvernement, "Japon"=Japon_PatrimoineGouvernement, "Mexique"=Mexique_PatrimoineGouvernement, "Russie"=Russie_PatrimoineGouvernement, "Etats-Unis"=US_PatrimoineGouvernement) %>%
 melt(id.vars="Year") %>%
 mutate(PatrimoineGouvernement = value)%>%
@@ -211,6 +217,8 @@ final_country_dataset <- merge(x = final_country_dataset, y = tempdataset13, by 
 final_country_dataset <- merge(x = final_country_dataset, y = tempdataset14, by = c("Year", "variable"), all = TRUE)
 
 final_country_dataset <- final_country_dataset %>% rename(Pays=variable)
+rm(tempdataset, tempdataset2, tempdataset3,tempdataset4,tempdataset5,tempdataset6,tempdataset7,tempdataset8,tempdataset9,tempdataset10,tempdataset11,tempdataset12,tempdataset13,tempdataset14)
+rm(PatGouvdataset,PatPrivdataset,PIBdataset,RatioPatRevdataset,RevNatdataset,RevNatTop1dataset,RevNatTop10dataset,RevNatMedium40dataset,RevNatBottom50dataset,CapNatdataset,PatTop1,PatTop10,PatMedium40,PatBottom50)
 ```
 
 ## Visualisation rapide des données
@@ -225,7 +233,6 @@ head(final_country_dataset)
 
 
 ```{r}
-
 # Part des Top 10% de la population dans le revenu national en 2019
 final_region_dataset %>% filter(Year == "2019") %>%
 ggplot(aes(x= reorder(Region, -PTNIT10_in_percent), y=PTNIT10_in_percent, fill=Region)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(PTNIT10_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Top 10% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip() +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 12))
@@ -233,7 +240,7 @@ ggplot(aes(x= reorder(Region, -PTNIT10_in_percent), y=PTNIT10_in_percent, fill=R
 ```
 
 
-```{r}
+```{r warning=FALSE}
 #Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019
 final_region_dataset %>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
 
@@ -249,7 +256,7 @@ ggplot(aes(x= reorder(Region, -PTNIB50_in_percent), y=PTNIB50_in_percent, fill=R
 
 ```
 
-```{r}
+```{r warning=FALSE}
 #Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
 final_region_dataset %>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
 
@@ -282,9 +289,8 @@ world <- melt(world[,c('Year','PTNIT10_in_percent','PTNIM40_in_percent','PTNIB50
 
 world%>%
 ggplot(aes(x=Year))+geom_col(aes(y=value, fill=variable))+ scale_fill_discrete(name = "Classes", labels = c("Top 10%", "Mid 40%", "Bot 50%"))+
-labs(title="Evolution de la part de chaque tranche dans le revenu national dans le monde", x="Années", y = "Part du revenu national (%)" )+
-theme(axis.text.y=element_blank(),
-      axis.ticks.y=element_blank())
+labs(title="Evolution de la part de chaque tranche dans le revenu national dans le monde", x="Années", y = "Part du revenu national (%)" )+theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
+rm(world)
 ```
 
 ```{r message = FALSE, warning = FALSE}
@@ -297,29 +303,30 @@ ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(ti
 
 
 ```{r message = FALSE, warning = FALSE}
-final_region_dataset %>% 
+tempEE <- final_region_dataset %>% 
 filter(Region=="Eastern Europe") %>%
-mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempEE
-final_region_dataset %>% 
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempWE <- final_region_dataset %>% 
 filter(Region=="Western Europe") %>%
-mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempWE
-final_region_dataset %>% 
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempAs <- final_region_dataset %>% 
 filter(Region=="Asia") %>%
-mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAs
-final_region_dataset %>% 
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempAf <- final_region_dataset %>% 
 filter(Region=="Africa") %>%
-mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAf
-final_region_dataset %>% 
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempOc <- final_region_dataset %>% 
 filter(Region=="Oceania") %>%
-mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempOc
-final_region_dataset %>% 
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempLA <- final_region_dataset %>% 
 filter(Region=="Latin America") %>%
-mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempLA
-final_region_dataset %>% 
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempNA <- final_region_dataset %>% 
 filter(Region=="Northern America") %>%
-mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempNA
+mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100)
 
 ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance du National Income", x="Années", y = "Taux de croissance NI",color = "Régions" )
+rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
 ```
 ```{r message = FALSE, warning = FALSE}
 final_region_dataset %>% 
@@ -329,29 +336,30 @@ ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(ti
 ```
 
 ```{r  message = FALSE, warning = FALSE}
-final_region_dataset %>% 
+tempEE <- final_region_dataset %>% 
 filter(Region=="Eastern Europe") %>%
-mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempEE
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempWE <- final_region_dataset %>% 
 filter(Region=="Western Europe") %>%
-mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempWE
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempAs <- final_region_dataset %>% 
 filter(Region=="Asia") %>%
-mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAs
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempAf <- final_region_dataset %>% 
 filter(Region=="Africa") %>%
-mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAf
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempOc <- final_region_dataset %>% 
 filter(Region=="Oceania") %>%
-mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempOc
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempLA <- final_region_dataset %>% 
 filter(Region=="Latin America") %>%
-mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempLA
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempNA <-final_region_dataset %>% 
 filter(Region=="Northern America") %>%
-mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempNA
+mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
 
 ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance de l'enrichissement des Top 1%", x="Années", y = "Taux de croissance de la part dans le revenu national",color = "Régions" )
+rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
 ```
 ```{r message = FALSE, warning = FALSE}
 final_region_dataset %>% 
@@ -361,28 +369,29 @@ ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(ti
 ```
 
 ```{r message = FALSE, warning = FALSE}
-final_region_dataset %>% 
+tempEE <- final_region_dataset %>% 
 filter(Region=="Eastern Europe") %>%
-mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempEE
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempWE <- final_region_dataset %>% 
 filter(Region=="Western Europe") %>%
-mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempWE
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempAs <- final_region_dataset %>% 
 filter(Region=="Asia") %>%
-mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAs
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempAf <- final_region_dataset %>% 
 filter(Region=="Africa") %>%
-mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempAf
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempOc <- final_region_dataset %>% 
 filter(Region=="Oceania") %>%
-mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempOc
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempLA <- final_region_dataset %>% 
 filter(Region=="Latin America") %>%
-mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempLA
-final_region_dataset %>% 
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
+tempNA <- final_region_dataset %>% 
 filter(Region=="Northern America") %>%
-mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) -> tempNA
+mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
 
 ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance de l'enrichissement des Bottom 50%", x="Années", y = "Taux de croissance de la part dans le revenu national",color = "Régions" )
+rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
 ```
 
