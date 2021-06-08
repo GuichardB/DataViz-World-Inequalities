@@ -217,7 +217,7 @@ ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(c
 ```{r}
 final_dataset %>%
 filter(region=="Africa")%>%
-ggplot(aes(x=Year))+ geom_line(aes(y=Private_capital)) + geom_line(aes(y=Public_capital))
+ggplot(aes(x=Year))+ geom_line(aes(y=Private_capital))
 ```
 
 ```{r}
