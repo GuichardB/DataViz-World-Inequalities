@@ -234,15 +234,15 @@ head(final_country_dataset)
 
 ```{r}
 # Part des Top 10% de la population dans le revenu national en 2019
-final_region_dataset %>% filter(Year == "2019") %>%
-ggplot(aes(x= reorder(Region, -PTNIT10_in_percent), y=PTNIT10_in_percent, fill=Region)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(PTNIT10_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Top 10% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip() +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 12))
+final_region_dataset %>% filter(Year == "2019", Region !="World") %>%
+ggplot(aes(x= reorder(Region, -PTNIT10_in_percent), y=PTNIT10_in_percent, fill=Region)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(PTNIT10_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Top 10% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip() +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 8))
 
 ```
 
 
 ```{r warning=FALSE}
 #Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019
-final_region_dataset %>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+final_region_dataset %>% filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
 
 ```
 
@@ -251,14 +251,14 @@ final_region_dataset %>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region
 ```{r}
 
 # Part des Bottom 50% de la population dans le revenu national en 2019
-final_region_dataset %>% filter(Year == "2019") %>%
+final_region_dataset %>% filter(Year == "2019", Region !="World") %>%
 ggplot(aes(x= reorder(Region, -PTNIB50_in_percent), y=PTNIB50_in_percent, fill=Region)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(PTNIB50_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Bottom 50% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip()  +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 2.5))
 
 ```
 
 ```{r warning=FALSE}
 #Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
-final_region_dataset %>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
 
 ```
 
@@ -393,5 +393,9 @@ mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent -
 
 ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance de l'enrichissement des Bottom 50%", x="Années", y = "Taux de croissance de la part dans le revenu national",color = "Régions" )
 rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
+```
+```{r}
+final_region_dataset %>% filter(Year == "2019") %>%
+ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent, color="Top 1%"))+geom_line(aes(y=NI, color="Revenu National")) + labs(title="Corrélation entre hausse de revenu et enrichissement des Top1%", x="Années", y = "Part du revenu national (%)",color = "Classes" )+ scale_x_continuous(limits = c(1980,2019), expand = c(0, 0)) + scale_y_continuous(limits = c(5,25), expand = c(0, 0))
 ```
 
