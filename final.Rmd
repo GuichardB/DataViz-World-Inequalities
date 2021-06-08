@@ -40,9 +40,13 @@ world_country_data3 <- read_delim("data/World_Country_Data/world_country_data3.c
 
 ```{r}
 region_dataset <- merge(x = world_region_data, y = world_region_data2, by = "Year", all = TRUE)
+region_dataset <- data.frame(region_dataset)
+region_dataset <- tibble(region_dataset)
 
 merged1 <- merge(x = world_country_data1, y = world_country_data2, by = "Year", all = TRUE)
 country_dataset <- merge(x = merged1, y = world_country_data3, by = "Year", all = TRUE)
+country_dataset <- data.frame(country_dataset)
+country_dataset <- tibble(country_dataset)
 ```
 
 ## Création de sous-datasets pour séparer les données par indicateurs
@@ -102,9 +106,7 @@ final_region_dataset <- merge(x = final_region_dataset, y = tempdataset3, by = c
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset4, by = c("Year", "variable"), all = TRUE)
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset5, by = c("Year", "variable"), all = TRUE)
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset6, by = c("Year", "variable"), all = TRUE)%>%
-rename(Region=variable)%>%
-mutate(Private_capital = (GDP - NI)/GDP)%>%
-mutate(Public_capital = (NI/GDP))
+rename(Region=variable)
 
 ```
 
@@ -144,11 +146,71 @@ melt(id.vars="Year") %>%
 mutate(RatioPatrimoineRevenu = value)%>%
 subset (select = -value)
 
+tempdataset5 <- RevNatdataset %>% rename("France"=France_RevenuNational,"Afrique du Sud"=AfriqueSud_RevenuNational, "Australie"=Australie_RevenuNational, "Canada"=Canada_RevenuNational, "Chine"=Chine_RevenuNational, "Danemark"=Danemark_RevenuNational, "Inde"=Inde_RevenuNational, "Royaume-Uni"=RU_RevenuNational, "Japon"=Japon_RevenuNational, "Mexique"=Mexique_RevenuNational, "Russie"=Russie_RevenuNational, "Etats-Unis"=US_RevenuNational) %>%
+melt(id.vars="Year") %>%
+mutate(RevenuNational = value)%>%
+subset (select = -value)
+
+tempdataset6 <- RevNatTop10dataset %>% rename("France"=`France_RevenuNationalPT(Top10%)`,"Afrique du Sud"=`AfriqueSud_RevenuNationalPT(Top10%)`, "Australie"=`Australie_RevenuNationalPT(Top10%)`, "Canada"=`Canada_RevenuNationalPT(Top10%)`, "Chine"=`Chine_RevenuNationalPT(Top10%)`, "Danemark"=`Danemark_RevenuNationalPT(Top10%)`, "Inde"=`Inde_RevenuNationalPT(Top10%)`, "Royaume-Uni"=`RU_RevenuNationalPT(Top10%)`, "Japon"=`Japon_RevenuNationalPT(Top10%)`, "Mexique"=`Mexique_RevenuNationalPT(Top10%)`, "Russie"=`Russie_RevenuNationalPT(Top10%)`, "Etats-Unis"=`US_RevenuNationalPT(Top10%)`) %>%
+melt(id.vars="Year") %>%
+mutate(RevenuNationalTop10 = value*100)%>%
+subset (select = -value)
+
+tempdataset7 <- RevNatBottom50dataset %>% rename("France"=`France_RevenuNationalPT(Bottom50%)`,"Afrique du Sud"=`AfriqueSud_RevenuNationalPT(Bottom50%)`, "Australie"=`Australie_RevenuNationalPT(Bottom50%)`, "Canada"=`Canada_RevenuNationalPT(Bottom50%)`, "Chine"=`Chine_RevenuNationalPT(Bottom50%)`, "Danemark"=`Danemark_RevenuNationalPT(Bottom50%)`, "Inde"=`Inde_RevenuNationalPT(Bottom50%)`, "Royaume-Uni"=`RU_RevenuNationalPT(Bottom50%)`, "Japon"=`Japon_RevenuNationalPT(Bottom50%)`, "Mexique"=`Mexique_RevenuNationalPT(Bottom50%)`, "Russie"=`Russie_RevenuNationalPT(Bottom50%)`, "Etats-Unis"=`US_RevenuNationalPT(Bottom50%)`) %>%
+melt(id.vars="Year") %>%
+mutate(RevenuNationalBottom50 = value*100)%>%
+subset (select = -value)
+
+tempdataset8 <- RevNatTop1dataset %>% rename("France"=`France_RevenuNationalPT(Top1%)`,"Afrique du Sud"=`AfriqueSud_RevenuNationalPT(Top1%)`, "Australie"=`Australie_RevenuNationalPT(Top1%)`, "Canada"=`Canada_RevenuNationalPT(Top1%)`, "Chine"=`Chine_RevenuNationalPT(Top1%)`, "Danemark"=`Danemark_RevenuNationalPT(Top1%)`, "Inde"=`Inde_RevenuNationalPT(Top1%)`, "Royaume-Uni"=`RU_RevenuNationalPT(Top1%)`, "Japon"=`Japon_RevenuNationalPT(Top1%)`, "Mexique"=`Mexique_RevenuNationalPT(Top1%)`, "Russie"=`Russie_RevenuNationalPT(Top1%)`, "Etats-Unis"=`US_RevenuNationalPT(Top1%)`) %>%
+melt(id.vars="Year") %>%
+mutate(RevenuNationalTop1 = value*100)%>%
+subset (select = -value)
+
+tempdataset9 <- RevNatMedium40dataset %>% rename("France"=`France_RevenuNationalPT(Medium40%)`,"Afrique du Sud"=`AfriqueSud_RevenuNationalPT(Medium40%)`, "Australie"=`Australie_RevenuNationalPT(Medium40%)`, "Canada"=`Canada_RevenuNationalPT(Medium40%)`, "Chine"=`Chine_RevenuNationalPT(Medium40%)`, "Danemark"=`Danemark_RevenuNationalPT(Medium40%)`, "Inde"=`Inde_RevenuNationalPT(Medium40%)`, "Royaume-Uni"=`RU_RevenuNationalPT(Medium40%)`, "Japon"=`Japon_RevenuNationalPT(Medium40%)`, "Mexique"=`Mexique_RevenuNationalPT(Medium40%)`, "Russie"=`Russie_RevenuNationalPT(Medium40%)`, "Etats-Unis"=`US_RevenuNationalPT(Medium40%)`) %>%
+melt(id.vars="Year") %>%
+mutate(RevenuNationalMedium40 = value*100)%>%
+subset (select = -value)
+
+tempdataset10 <- CapNatdataset %>% rename("France"=France_CapitalNational,"Afrique du Sud"=AfriqueSud_CapitalNational, "Australie"=Australie_CapitalNational, "Canada"=Canada_CapitalNational, "Chine"=Chine_CapitalNational, "Danemark"=Danemark_CapitalNational, "Inde"=Inde_CapitalNational, "Royaume-Uni"=RU_CapitalNational, "Japon"=Japon_CapitalNational, "Mexique"=Mexique_CapitalNational, "Russie"=Russie_CapitalNational, "Etats-Unis"=US_CapitalNational) %>%
+melt(id.vars="Year") %>%
+mutate(CapitalNational = value*100)%>%
+subset (select = -value)
+
+tempdataset11 <- PatTop10 %>% rename("France"=France_Patrimoine.Top10..,"Afrique du Sud"=AfriqueSud_Patrimoine.Top10.., "Australie"=Australie_Patrimoine.Top10.., "Canada"=Canada_Patrimoine.Top10.., "Chine"=Chine_Patrimoine.Top10.., "Danemark"=Danemark_Patrimoine.Top10.., "Inde"=Inde_Patrimoine.Top10.., "Royaume-Uni"=RU_Patrimoine.Top10.., "Japon"=Japon_Patrimoine.Top10.., "Mexique"=Mexique_Patrimoine.Top10.., "Russie"=Russie_Patrimoine.Top10.., "Etats-Unis"=US_Patrimoine.Top10..) %>%
+melt(id.vars="Year") %>%
+mutate(PatrimoineTop10 = value*100)%>%
+subset (select = -value)
+
+tempdataset12 <- PatBottom50 %>% rename("France"=France_Patrimoine.Bottom50..,"Afrique du Sud"=AfriqueSud_Patrimoine.Bottom50.., "Australie"=Australie_Patrimoine.Bottom50.., "Canada"=Canada_Patrimoine.Bottom50.., "Chine"=Chine_Patrimoine.Bottom50.., "Danemark"=Danemark_Patrimoine.Bottom50.., "Inde"=Inde_Patrimoine.Bottom50.., "Royaume-Uni"=RU_Patrimoine.Bottom50.., "Japon"=Japon_Patrimoine.Bottom50.., "Mexique"=Mexique_Patrimoine.Bottom50.., "Russie"=Russie_Patrimoine.Bottom50.., "Etats-Unis"=US_Patrimoine.Bottom50..) %>%
+melt(id.vars="Year") %>%
+mutate(PatrimoineBottom50 = value*100)%>%
+subset (select = -value)
+
+tempdataset13 <- PatTop1 %>% rename("France"=France_Patrimoine.Top1..,"Afrique du Sud"=AfriqueSud_Patrimoine.Top1.., "Australie"=Australie_Patrimoine.Top1.., "Canada"=Canada_Patrimoine.Top1.., "Chine"=Chine_Patrimoine.Top1.., "Danemark"=Danemark_Patrimoine.Top1.., "Inde"=Inde_Patrimoine.Top1.., "Royaume-Uni"=RU_Patrimoine.Top1.., "Japon"=Japon_Patrimoine.Top1.., "Mexique"=Mexique_Patrimoine.Top1.., "Russie"=Russie_Patrimoine.Top1.., "Etats-Unis"=US_Patrimoine.Top1..) %>%
+melt(id.vars="Year") %>%
+mutate(PatrimoineTop1 = value*100)%>%
+subset (select = -value)
+
+tempdataset14 <- PatMedium40 %>% rename("France"=France_Patrimoine.Medium40..,"Afrique du Sud"=AfriqueSud_Patrimoine.Medium40.., "Australie"=Australie_Patrimoine.Medium40.., "Canada"=Canada_Patrimoine.Medium40.., "Chine"=Chine_Patrimoine.Medium40.., "Danemark"=Danemark_Patrimoine.Medium40.., "Inde"=Inde_Patrimoine.Medium40.., "Royaume-Uni"=RU_Patrimoine.Medium40.., "Japon"=Japon_Patrimoine.Medium40.., "Mexique"=Mexique_Patrimoine.Medium40.., "Russie"=Russie_Patrimoine.Medium40.., "Etats-Unis"=US_Patrimoine.Medium40..) %>%
+melt(id.vars="Year") %>%
+mutate(PatrimoineMedium40 = value*100)%>%
+subset (select = -value)
+
 final_country_dataset <- merge(x = tempdataset, y = tempdataset2, by = c("Year", "variable"), all = TRUE)
 final_country_dataset <- merge(x = final_country_dataset, y = tempdataset3, by = c("Year", "variable"), all = TRUE)
 final_country_dataset <- merge(x = final_country_dataset, y = tempdataset4, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset5, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset6, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset7, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset8, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset9, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset10, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset11, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset12, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset13, by = c("Year", "variable"), all = TRUE)
+final_country_dataset <- merge(x = final_country_dataset, y = tempdataset14, by = c("Year", "variable"), all = TRUE)
 
-final_country_dataset <- final_country_dataset %>% rename(Country=variable)
+final_country_dataset <- final_country_dataset %>% rename(Pays=variable)
 ```
 
 ## Visualisation rapide des données
