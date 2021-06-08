@@ -12,13 +12,13 @@ dashboardPage(skin="red",
             
         ),
       varSelectInput("indicateur", label = "Indicateur :",
-                  final_dataset[3:10], plotOutput("region1")),
+                  final_region_dataset[3:8], plotOutput("region1")),
       sliderInput("year", label = h3("Années"), min = 1980, 
                   max = 2019, value = c(1980, 2019)),
       selectInput("region1", label = "Région 1 :",
-                final_dataset['region'], plotOutput("region1")),
+                final_region_dataset['Region'], plotOutput("region1")),
       selectInput("region2", label = "Région 2 :",
-                  final_dataset['region'], plotOutput("region2"))
+                  final_region_dataset['Region'], plotOutput("region2"))
     ),
     
     dashboardBody(
