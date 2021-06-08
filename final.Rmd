@@ -402,4 +402,10 @@ ggplot(aes(x=NI,y=PTNIT1_in_percent))+geom_point(aes(color=Region))+ labs(title=
 final_region_dataset %>% filter(Year == "2019", Region!="World") %>%
 ggplot(aes(x=NI,y=PTNIB50_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse de revenu national et revenu des Bottom 50% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")
 ```
-
+```{r warning=FALSE}
+#Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
+final_country_dataset%>%filter(Year>=1990) %>% ggplot(aes(x=Year, group = Pays, color = Pays))+
+geom_line(aes(y=PatrimoineGouvernement/RevenuNational*100,linetype = "Public"))+
+geom_line(aes(y=PatrimoinePrivé/RevenuNational*100,linetype = "Privé"))+
+labs(title="Comparaison de l'évolution des capitaux privés et public", x="Année", y = "Part du revenu national (%)", linetype="Capitaux")
+```
