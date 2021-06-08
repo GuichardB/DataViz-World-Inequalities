@@ -2,7 +2,7 @@ library(shiny)
 library(shinydashboard)
 
 dashboardPage(skin="red",
-    dashboardHeader(title = "Inégalités des revenus dans le Monde"),
+    dashboardHeader(title = "Projet IF36"),
     dashboardSidebar( 
         sidebarMenu(
           menuItem("Accueil", tabName = "stats", icon = icon("th")),
