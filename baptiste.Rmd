@@ -252,3 +252,4 @@ dataset %>% select("Year", "WesternEuropePTNIT1", "WesternEuropePTNIB50") %>% mu
 ggplot(aes(x=Year))+geom_line(aes(y=Top1), color="red") +geom_line(aes(y=Bottom50), color="blue") + labs(title="Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Europe de l'Ouest, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
 
 ```
+
