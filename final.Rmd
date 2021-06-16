@@ -1,23 +1,201 @@
 ---
----
-title: "Final"
-output: html_document
+title: "Rapport de Projet IF36 - Les inégalités de richesses dans le monde"
+output: 
+    rmarkdown::html_document:
+        theme: lumen
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Import des library
+***
+
+## Sommaire 
+
+- [Introduction](#introduction)
+  1. [Présentation des données](#présentation-des-données)
+  2. [Plan d'analyse](#plan-d'analyse)
+
+- [Exploration](#exploration)
+  1. [Prétraitement](#prétraitement)
+  2. [Analyse des inégalités selon les régions du monde](#analyse-des-inégalités-selon-les-régions-du-monde)
+  3. [Analyse au niveau des pays et causes potentielles](#analyse-au-niveau-des-pays-et-causes-potentielles)
+  4. [Comparaison France/USA](#comparaison-france/usa)
+
+- [Conclusion](#conclusion)
+  1. [Ce qu'on a appris des données](#ce-qu'on-a-appris-des-données)
+  2. [Les difficultés rencontrées](#les-difficultés-rencontrées)
+  3. [Retour d'expérience personnel](#retour-d'expérience-personnel)
+
+***
+
+# Introduction
+
+Après avoir effectué nos recherches de datasets chacun de notre côté et comparé nos centres d'intéret, nous nous sommes arrêté sur un sujet : les inégalités dans le monde.
+Nous allons présenter ici les données choisies et notre plan d'analyse.
+
+***
+
+## Présentation des données 
+
+#### World Inequality Database
+
+Les données correspondent à une combinaison de plusieurs sources de données sur les inégalités dans le monde : comptes nationaux, enquêtes, données fiscales et classements de richesse. D'après les chercheurs à l'origine de ce dataset, cela permet d'avoir un suivi de l'évolution plus précis et à tout les niveaux des richesses dans le monde.
+
+Les données sont accessibles sur le site [WID](https://wid.world/data/).
+
+#### Le dataset complet
+Le dataset complet est composé de nombreux fichiers.
+
+Le fichier WID_countries.csv qui contient 5 variables et 346 observations (une par pays) :
+
+* alpha2: le code à 2 lettres du pays/région
+
+* titlename: le nom du pays/région
+
+* shortname: le nom du pays/région (plus court)
+
+* region: région du monde à laquelle le pays appartient
+
+* region2: région plus précise du monde à laquelle le pays appartient
+
+Les fichers WID_data_XX.csv pour chaque pays qui contiennent chacun 7 variables et un nombre d'observations très variable en fonction des pays:
+
+* country: code pays/region (voir WID_countries.csv)
+
+* variable: WID code pour les variables (détaillés plus loin)
+
+* percentile: WID code pour les pourcentages (détaillés plus loin)
+
+* year: l'année de cette donnée (de 1800 à 2019)
+
+* value: la valeur de cette donnée
+
+* age: code indiquant le groupe d'âge auquel la donnée fait référence
+
+* pop: code indiquant l'unité de population auquel la donnée fait référence
+
+Les fichiers WID_metadata_XX.csv qui contiennent chacun 17 variables précisant pour chaque fichier des descriptions précises de chaque variable du dataset,l'unités, la source et la méthode utilisée pour chaque observation.
+
+La signification de chaque variable est donc décrite dans les fichers metadata. Le code WID pour les variables répond à la logique suivante:
+
+* la première lettre indique le type de variable (ex: "s" pour share)
+
+* les 5 lettres suivantes indiquent le type revenu/richesse/autre (ex: "ptinc" pour pre-tax national income)
+
+* les 3 nombres suivants indiquent le groupe d'âge (ex: "992" pour adultes)
+
+* la dernière lettre indique l'unité de population 
+
+Il y a 2 types de pourcentages utilisés par WID.world : (1) pourcentages de groupe et (2) pourcentages généraux. L'interprétation du revenu (ou richesse) va dépendre de ces pourcentages.
+
+Les pourcentages de groupe sont définis ainsi : p0p50 (bottom 50% of the population), p50p90 (next 40%), p90p100 (top 10%), p99p100 (top 1%), p0p10 (bottom 10% of the population, i.e. first decile), p10p20 (next 10%, i.e. second decile), p20p30 (next 10%, i.e. third decile), p30p40 (next 10%, i.e. fourth decile), p40p50 (next 10%, i.e. fifth decile), p50p60 (next 10%, i.e. sixth decile), p60p70 (next 10%, i.e. seventh decile), p70p80 (next 10%, i.e. eighth decile), p80p90 (next 10%, i.e. ninth decile), p0p90 (bottom 90%), p0p99 (bottom 99% of the population), p99.9p100 (top 0.1%), p99.99p100 (top 0.01%).
+
+Les pourcentages généraux sont définis ainsi: p0, p1, p2, ..., p99.99, p99.991, p99.992 ,..., p99.999. Il y a 197 pourcentages au total.
+
+#### Le dataset prétraité
+Comme on peut le constater, le dataset complet contient beaucoup de données très précises mais difficiles à analyser sans prétraitement.
+
+Cependant WID.world met à disposition un outil permettant d'obtenir des datasets personnalisés en choisissant les variables, pays/région ou années qui nous intéressent.
+Nous avons testé cet outil avec un premier dataset contenant toutes les données sur la France.
+
+### Les variables
+
+Les pricipales variables par pays et par année sont :
+
+**Per adult national income** (Decimal) : Le revenu national vise à mesurer le revenu total dont disposent les résidents d'un pays donné. Il est égal au produit intérieur brut, moins le capital fixe utilisé dans les processus de production, plus le revenu étranger net gagné par les résidents dans le reste du monde. L'économie nationale - au sens de la comptabilité nationale - comprend tous les secteurs domestiques, c'est-à-dire toutes les entités qui résident dans un pays donné (au sens de leur activité économique), qu'elles appartiennent au secteur privé, au secteur des entreprises, au secteur des administrations publiques. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage). Cela revient à supposer qu'il n'y a pas de partage des ressources au sein des couples.
+
+**Per adult GDP** (Decimal) : Le produit intérieur brut est la valeur totale des biens et services produits par l'économie nationale. L'économie nationale - au sens de la comptabilité nationale - comprend tous les secteurs intérieurs, c'est-à-dire toutes les entités qui résident dans un pays donné (au sens de leur activité économique), qu'elles appartiennent au secteur privé, au secteur des entreprises, au secteur des administrations publiques. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage). Cela revient à supposer qu'il n'y a pas de partage des ressources au sein des couples.
+
+**Income Inequality** (Decimal) : Le revenu national avant impôt est la somme de tous les flux de revenu personnel avant impôt revenant aux propriétaires des moyens de production, à savoir le travail et le capital, avant de prendre en compte le fonctionnement du système d'imposition/transfert, mais après avoir pris en compte le fonctionnement du système de retraite. La différence centrale entre le revenu personnel des facteurs et le revenu avant impôt est le traitement des pensions, qui sont comptabilisées sur une base de contribution par source de  revenu et sur une base de distribution par le revenu avant impôt. La population est constituée des individus âgés de plus de 20 ans. L'unité de base est l'unité fiscale définie par les administrations fiscales nationales pour mesurer l'impôt sur le revenu des personnes physiques.
+
+- Top 10% share : Part des 10% supérieurs
+- Middle 40% share : Part des 40% du milieu
+- Bottom 50% share : Part des 50% inférieurs 
+- Top 1% share : Part des 1% supérieurs
+
+**Per adult national wealth** (Decimal) : La richesse nationale nette est la valeur totale des actifs (liquidités, logements, obligations, actions, etc.) détenus par l'économie nationale, moins ses dettes. L'économie nationale - au sens de la comptabilité nationale - comprend tous les secteurs domestiques, c'est-à-dire toutes les entités qui résident dans un pays donné (au sens de leur activité économique), qu'elles appartiennent au secteur privé, au secteur des entreprises, au secteur des administrations publiques. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage). Cela revient à supposer qu'il n'y a pas de partage des ressources au sein des couples.
+
+**Wealth-income ratio** (Decimal) : Le rapport richesse-revenu est la division de la richesse nationale par le revenu national.
+
+**Wealth Inequality** (Decimal) : Le patrimoine personnel net est la valeur totale des actifs non financiers et financiers (logement, terrains, dépôts, obligations, actions, etc.) détenus par les ménages, moins leurs dettes. . Le secteur des particuliers ou des ménages - au sens de la comptabilité nationale - comprend tous les ménages et les particuliers (y compris ceux vivant en institution), ainsi que les entreprises non constituées en société dont les comptes ne sont pas séparés de ceux des ménages qui les possèdent. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage) mais les ressources sont réparties de manière égale au sein des couples.
+
+- Top 10% share : Part des 10% supérieurs
+- Middle 40% share : Part des 40% du milieu
+- Bottom 50% share : Part des 50% inférieurs 
+- Top 1% share : Part des 1% supérieurs
+
+### Un exemple de données (Pour la France)
+
+**Year** (Année étudiée) : 2014
+
+1. **Per adult national income** : 206741.8612 (EUR)
+2. **Per adult GDP** : 40031.5172 (EUR)
+3. **Income Inequality** (Top 10% share) : 0.3109 (part)
+4. **Income Inequality** (Middle 40% share) : 0.4649 (part)
+5. **Income Inequality** (Bottom 50% share) : 0.2243 (part)
+6. **Income Inequality** (Top 1% share) : 0.0925 (part)
+7. **Per adult national wealth** : 35541.7993 (EUR)
+8. **Wealth-income ratio** : 5.8168702126 (ratio)
+9. **Wealth Inequality** (Top 10% share) : 0.5528 (part)
+10. **Wealth Inequality** (Middle 40% share) : 0.3838 (part)
+11. **Wealth Inequality** (Bottom 50% share) : 0.0634 (part)
+12. **Wealth Inequality** (Top 1% share) : 0.2338 (part)
+
+
+## Plan d'analyse 
+***
+
+### Nos interrogations générales
+* Y a-t-il une classe sociale parmis laquelle les inégalités de richesse et de revenus sont plus présentes ?
+* Quels sont les pays qui comportent le moins/le plus d'inégalités parmi leur population ?
+* Y a-t-il des régions du monde où les inégalités sont globalement plus/moins présentes que les autres ?
+* Quels sont les pays qui ont le meilleur/le pire rapport richesse-revenu ?
+* Y a-t-il une similitude entre les pays qui comportent le plus/le moins d'inégalités ?
+* Certains pays ont-ils connu une augmentation/diminution significative de leurs richesses et leurs revenus ? 
+* Certains pays ont-ils connu une baisse/une hausse conséquente des inégalités d'une certaine classe sociale ? Si oui, pourquoi ?
+* D'une manière générale, comment ont évolué les inégalités et les richesses dans le monde depuis 1800 ? Voit-on des augmentations importantes aux années correspondantes aux révolution industrielles ?
+* Comment les richesses des pays ont-elles évolués entre 1800 et 1900 ?
+* Comment les richesses des pays ont-elles évolués entre 1900 et 2000 ?
+* Comment les richesses des pays ont-elles évolués entre 2000 et 2019 ?
+
+### Les interrogations en comparant plusieurs variables
+* Comment évolue la corrélation entre les revenus des populations du monde (income) avec leur richesse (wealth) ?
+* A quel degré sont corrélés ces deux indicateurs en fonction des groupes de populations sélectionnés ?
+* Comment peut-on interpréter le PIB et le revenu national et comment évolue leur lien ?
+* En choisissant deux pays diamétralement opposés sur UN critère, quelle est leur situation sur d'autres critères ?
+* En ajoutant d'autres variables tel que la taille de la population, la part de la population salariée etc, comment interpréter les résultats de la confrontation avec les richesses du pays etc.
+
+### Limites du dataset 
+Notre dataset se résume à des données concernant les richesses et les revenus des populations du monde. Cependant, les inégalités se mesurent au moyen de nombreux autres facteurs de conditions de vie. Parmis elles, nous pouvont citer l'accès à l'eau potable, à l'alimentation, à l'éducation, à la santé, au logement et aux nouvelles technologies.
+L'Indice de Développement Humain (IDH) mesure ces facteurs, et il pourrait être intéressant de le confronter aux indicateurs présents dans notre dataset, toujours dans le cadre de nos recherches sur les inégalités dans le monde. En effet, pays riche n'est pas toujours synonyme de pays développé.
+Enfin, il faudra savoir tirer des conclusions quant aux causes de ces inégalités, qui peuvent être de natures différentes que celles exposées dans notre dataset : raisons historiques, environnementales, politiques etc.
+
+***
+
+# Exploration
+
+## Prétraitement
+
+### Import des library
+
+Pour réaliser se projet de visualitation de données avec R nous avons utilisés l'ensemble de librairies du 'tinyverse', 'reshape2' ainsi que 'ggthemes' pour améliorer l'esthétique des graphes.
 
 ```{r message = FALSE}
 library(tidyverse)
 library(reshape2)
 library(ggthemes)
+library(knitr)
 
 ```
 
-## Import des données
+### Import des données
+
+Notre objectif initial était de traiter les données au niveau de chaque grande région du monde, cependant certains indicateurs sont disponibles uniquement au niveau des pays. Nous avons donc décidé d'utiliser 2 datasets différents afin de pouvoir réaliser un maximum de visualisations intéressantes.
+
+L'outil de création de datasets personnalisés proposé par le site permet d'utiliser seulement 5 indicateurs par datasets.
+Donc pour les 2 datasets nous avons dut télécharger les données par morceaux et les agréer ensemble par la suite.
 
 ```{r message = FALSE, warning=FALSE}
 world_region_data <- read_delim("data/World_Region_Data/world_region_data.csv", 
@@ -36,23 +214,26 @@ world_country_data3 <- read_delim("data/World_Country_Data/world_country_data3.c
     ";", escape_double = FALSE, trim_ws = TRUE)
 ```
 
-## Agrégation des datasets
+### Agrégation des datasets
 
 ```{r}
 region_dataset <- merge(x = world_region_data, y = world_region_data2, by = "Year", all = TRUE)
 region_dataset <- data.frame(region_dataset)
 region_dataset <- tibble(region_dataset)
 rm(world_region_data,world_region_data2)
-```
 
-```{r}
 country_dataset <- merge(x = world_country_data1, y = world_country_data2, by = "Year", all = TRUE)
 country_dataset <- merge(x = country_dataset, y = world_country_data3, by = "Year", all = TRUE)
 country_dataset <- data.frame(country_dataset)
 country_dataset <- tibble(country_dataset)
 ```
 
-## Création de sous-datasets pour séparer les données par indicateurs
+### Création de sous-datasets pour séparer les données par indicateurs
+
+Afin de faciliter le travail de création de visualisations nous avons réalisé que nous devions changer le format de nos données.
+En effet nous voulons avoir en parametre les indicateurs sans les régions/pays où ils ont été mesuré et avoir ainsi tout les pays/régions dans une colonne à part.
+Pour ce faire un gros travail de prétraitement est nécessaire.
+On extrait tout d'abord chaque indicateur dans un dataframe propre.
 
 ```{r}
 NIdataset <- region_dataset %>% select("Year", ends_with("NI"))
@@ -63,9 +244,7 @@ PTNIT1dataset <- region_dataset %>% select("Year", ends_with("PTNIT1"))
 PTNIT10dataset <- region_dataset %>% select("Year", ends_with("PTNIT10"))
 PTNIM40dataset <- region_dataset %>% select("Year", ends_with("PTNIM40"))
 rm(region_dataset)
-```
 
-```{r}
 PatGouvdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoineGouvernement"))
 PatPrivdataset <- world_country_data1 %>% select("Year", ends_with("PatrimoinePrivé"))
 PIBdataset <- world_country_data1 %>% select("Year", ends_with("PIB"))
@@ -82,6 +261,7 @@ PatBottom50 <- country_dataset %>% select("Year", ends_with("Patrimoine.Bottom50
 PatTop1 <- country_dataset %>% select("Year", ends_with("Patrimoine.Top1.."))
 rm(country_dataset,world_country_data1,world_country_data2,world_country_data3)
 ```
+On vient ensuite regrouper chaque observation par régions/pays et appliquer des transformations aux variables pour les rendre plus lisibles.  
 
 ```{r}
 tempdataset <- PTNIT10dataset %>% rename("World"=WorldPTNIT10,"Western Europe"=WesternEuropePTNIT10, Asia=AsiaPTNIT10, "Eastern Europe"=EasternEuropePTNIT10, "Northern America"=NorthernAmericaPTNIT10, Oceania=OceaniaPTNIT10, "Latin America"=LatinAmericaPTNIT10, Africa=AfricaPTNIT10) %>%
@@ -119,7 +299,7 @@ melt(id.vars="Year") %>%
 filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
 rename(GDP=value)
 ```
-
+On merge tout les indicateurs dans un seul dataset 
 ```{r}
 final_region_dataset <- merge(x = tempdataset, y = tempdataset2, by = c("Year", "variable"), all = TRUE)
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset3, by = c("Year", "variable"), all = TRUE)
@@ -130,7 +310,7 @@ rename(Region=variable)
 rm(tempdataset, tempdataset2, tempdataset3,tempdataset4,tempdataset5,tempdataset6)
 rm(NIdataset,GDPdataset,PTNIT1dataset,PTNIT10dataset,PTNIM40dataset,PTNIB50dataset,PTNIB40dataset)
 ```
-
+De même pour le dataset par pays.
 ```{r}
 tempdataset <- PatGouvdataset %>% rename("France"=France_PatrimoineGouvernement,"Afrique du Sud"=AfriqueSud_PatrimoineGouvernement, "Australie"=Australie_PatrimoineGouvernement, "Canada"=Canada_PatrimoineGouvernement, "Chine"=Chine_PatrimoineGouvernement, "Danemark"=Danemark_PatrimoineGouvernement, "Inde"=Inde_PatrimoineGouvernement, "Royaume-Uni"=RU_PatrimoineGouvernement, "Japon"=Japon_PatrimoineGouvernement, "Mexique"=Mexique_PatrimoineGouvernement, "Russie"=Russie_PatrimoineGouvernement, "Etats-Unis"=US_PatrimoineGouvernement) %>%
 melt(id.vars="Year") %>%
@@ -221,16 +401,21 @@ rm(tempdataset, tempdataset2, tempdataset3,tempdataset4,tempdataset5,tempdataset
 rm(PatGouvdataset,PatPrivdataset,PIBdataset,RatioPatRevdataset,RevNatdataset,RevNatTop1dataset,RevNatTop10dataset,RevNatMedium40dataset,RevNatBottom50dataset,CapNatdataset,PatTop1,PatTop10,PatMedium40,PatBottom50)
 ```
 
-## Visualisation rapide des données
-```{r}
-head(final_region_dataset)
+### Visualisation rapide des données
+
+Après prétraitement de nos 2 datasets on obtien les résultats suivants :
+
+```{r error=FALSE}
+kable(tail(final_region_dataset), caption = "Dataset final par régions")
 ```
-```{r}
-head(final_country_dataset)
+```{r error=FALSE}
+kable(tail(final_country_dataset),caption = "Dataset final par pays")
 ```
 
 
+## Analyse des inégalités selon les régions du monde
 
+### Etat actuel
 
 ```{r}
 # Part des Top 10% de la population dans le revenu national en 2019
@@ -239,6 +424,7 @@ ggplot(aes(x= reorder(Region, -PTNIT10_in_percent), y=PTNIT10_in_percent, fill=R
 
 ```
 
+<<<<<<< HEAD
 
 ```{r warning=FALSE}
 #Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019
@@ -252,6 +438,8 @@ final_region_dataset %>% filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIT10
 
 
 
+=======
+>>>>>>> 6da409aafebc28cf5fb520e960318097c7f29e3a
 ```{r}
 
 # Part des Bottom 50% de la population dans le revenu national en 2019
@@ -260,6 +448,7 @@ ggplot(aes(x= reorder(Region, -PTNIB50_in_percent), y=PTNIB50_in_percent, fill=R
 
 ```
 
+<<<<<<< HEAD
 ```{r warning=FALSE}
 #Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
 <<<<<<< HEAD
@@ -267,15 +456,28 @@ final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_
 =======
 final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 >>>>>>> eea7f3ee23cab8c64458cda7df6b1ecaad129958
+=======
+```{r message=FALSE}
+final_region_dataset %>% filter(Year == "2019", Region!="World") %>%
+ggplot(aes(x=NI,y=PTNIT1_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse de revenu national et revenu des Top 1% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+```
+>>>>>>> 6da409aafebc28cf5fb520e960318097c7f29e3a
 
+```{r message=FALSE}
+final_region_dataset %>% filter(Year == "2019", Region!="World") %>%
+ggplot(aes(x=NI,y=PTNIB50_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse de revenu national et revenu des Bottom 50% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 ```
 
+### L'évolution
 
 ```{r}
-#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Amérique du Nord, de 1980 à 2019
-final_region_dataset %>% filter(Region == "Northern America") %>%
-ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent), color="red") +geom_line(aes(y=PTNIB50_in_percent), color="blue") + labs(title="Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Amérique du Nord, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+world <- filter(final_region_dataset, Region== "World")
+world <- melt(world[,c('Year','PTNIT10_in_percent','PTNIM40_in_percent','PTNIB50_in_percent')],id.vars =1)
 
+world%>%
+ggplot(aes(x=Year))+geom_col(aes(y=value, fill=variable))+ scale_fill_discrete(name = "Classes", labels = c("Top 10%", "Middle 40%", "Bottom 50%"))+
+labs(title="Evolution de la part de chaque classe dans le revenu national dans le monde", x="Années", y = "Part du revenu national (%)" )+theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+rm(world)
 ```
 ```{r}
 #Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs aux Etats-Unis, de 1980 à 2019
@@ -302,28 +504,23 @@ ggplot(aes(x=Year))+geom_line(aes(y=PatrimoineTop1), color="red") +geom_line(aes
 
 ```
 
-
-```{r}
-#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Europe de l'Ouest, de 1980 à 2019
-final_region_dataset %>% filter(Region == "Western Europe") %>%
-ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent), color="red") +geom_line(aes(y=PTNIB50_in_percent), color="blue") + labs(title="Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Europe de l'Ouest, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+```{r warning=FALSE}
+#Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019
+final_region_dataset %>% filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 
 ```
 
+```{r warning=FALSE}
+#Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
+final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+
+```
 
 ```{r}
 final_region_dataset %>% filter(Region == "World") %>%
 ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent, color="Top 1%"))+geom_line(aes(y=PTNIB50_in_percent, color="Bot 50%")) + labs(title="Evolution de la part du revenu national des Top 1% et Bot 50% de 1980 à 2019", x="Années", y = "Part du revenu national (%)",color = "Classes" )+ scale_x_continuous(limits = c(1980,2019), expand = c(0, 0)) + scale_y_continuous(limits = c(5,25), expand = c(0, 0))
 ```
-```{r}
-world <- filter(final_region_dataset, Region== "World")
-world <- melt(world[,c('Year','PTNIT10_in_percent','PTNIM40_in_percent','PTNIB50_in_percent')],id.vars =1)
 
-world%>%
-ggplot(aes(x=Year))+geom_col(aes(y=value, fill=variable))+ scale_fill_discrete(name = "Classes", labels = c("Top 10%", "Middle 40%", "Bottom 50%"))+
-labs(title="Evolution de la part de chaque classe dans le revenu national dans le monde", x="Années", y = "Part du revenu national (%)" )+theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
-rm(world)
-```
 
 ```{r message = FALSE, warning = FALSE}
 final_region_dataset %>% 
@@ -426,14 +623,10 @@ mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent -
 ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance de l'enrichissement des Bottom 50%", x="Années", y = "Taux de croissance de l'enrichissement",color = "Régions" )+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
 ```
-```{r message=FALSE}
-final_region_dataset %>% filter(Year == "2019", Region!="World") %>%
-ggplot(aes(x=NI,y=PTNIT1_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse de revenu national et revenu des Top 1% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
-```
-```{r message=FALSE}
-final_region_dataset %>% filter(Year == "2019", Region!="World") %>%
-ggplot(aes(x=NI,y=PTNIB50_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse de revenu national et revenu des Bottom 50% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
-```
+
+
+## Analyse au niveau des pays et causes potentielles
+
 ```{r warning=FALSE}
 #Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
 final_country_dataset%>%filter(Year>=1990, Pays!="Afrique du Sud" & Pays!="Japon" & Pays!="Mexique") %>% ggplot(aes(x=Year, group = Pays, color = Pays))+
@@ -441,3 +634,29 @@ geom_line(aes(y=PatrimoineGouvernement/RevenuNational*100,linetype = "Public"))+
 geom_line(aes(y=PatrimoinePrivé/RevenuNational*100,linetype = "Privé"))+
 labs(title="Comparaison de l'évolution des capitaux privés et public", x="Année", y = "Part du revenu national (%)", linetype="Capitaux")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 ```
+
+## Comparaison France/USA
+
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Europe de l'Ouest, de 1980 à 2019
+final_region_dataset %>% filter(Region == "Western Europe") %>%
+ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent), color="red") +geom_line(aes(y=PTNIB50_in_percent), color="blue") + labs(title="Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Europe de l'Ouest, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+
+```
+
+
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Europe de l'Ouest, de 1980 à 2019
+final_region_dataset %>% filter(Region == "Northern America") %>%
+ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent), color="red") +geom_line(aes(y=PTNIB50_in_percent), color="blue") + labs(title="Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en Europe de l'Ouest, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")
+
+```
+***
+
+# Conclusion
+
+## Ce qu'on a appris des données
+
+## Les difficultés rencontrées
+
+## Retour d'expérience personnel
