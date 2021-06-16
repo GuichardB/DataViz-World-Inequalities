@@ -675,6 +675,22 @@ Nous pouvons donc supposer que malgré une croissance économique importante ave
 
 Malheureusement, nous n'avons aucun autre indicateur qui permet d'explorer les causes potentielles de ces inégalités et de leur évolution.
 
+Durant notre analyse, nous avons également pu travailler avec l'outil PowerBI lors d'un TD. Nous avons profité de ce TD pour essayer de confirmer notre hypothèse sur le lien entre le manque de capitaux publics et la hausse des inégalités.
+
+Pour notre première visualisation, nous avons d'abord séléctionné 4 pays développés, les Etats-Unis, la France, la Chine et la Russie, afin de comparer la répartition du revenu national en 2015 dans chacun de ces pays.
+
+![Première visu PowerBI](images/PowerBI1.PNG)
+
+Nous pouvons voir que le revenu national est mieux réparti en France que dans les 3 autres pays, bien que la répartition reste inégalitaire. Concernant les 3 autres pays, les inégalités sont similaires: les 10 % les plus riches ont une part 3x plus élevée que les 50% les plus pauvres. 
+
+Nous avons ensuite cherché à voir si les pays avec le plus d'inégalités avaient bel et bien un patrimoine public très faible. C'est ce que nous avons comparé dans notre deuxième visualisation.
+
+![Deuxième visu PowerBI](images/PowerBI2.PNG)
+
+On peut voir que la Russie et la Chine ont proportionnellement beaucoup plus de patrimoine public que les Etats-Unis et la France, qui eux manquent de moyens.
+
+Nous pouvons donc en conclure que la France et les US souffrent peut-être du manque de capital pour faire face aux inégalités au sein de leur population, alors que pour la Chine et la Russie, il y a probablement un autre facteur qui rentre en compte. 
+
 
 ## Comparaison France/USA
 
