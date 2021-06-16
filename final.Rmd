@@ -415,6 +415,21 @@ kable(tail(final_country_dataset),caption = "Dataset final par pays")
 
 ## Analyse des inégalités selon les régions du monde
 
+### ShinyApp
+
+Dans ce projet, nous avons décider d'utiliser l'application Shiny comme un outil d'exploration de notre dataset.
+Nous avons donc créé un dashboard permettant de sélectionner un indicateur du dataset ainsi qu'une période donnée et d'obtenir ainsi rapidement un graph de l'évolution de cette variable au niveau mondial.
+Par exemple, on peut ici observer que globalement au niveau mondial, le revenue national n'a cesser d'augmenter dpuis 1980.
+
+![Première visu shiny](images/shiny1.png)
+
+La deuxième fonctionnalité proposée par notre dashboard permet de comparer cette évolution entre deux régions du monde.
+Par exemple, on peut ici observer la différence entre l'Afrique et l'Europe de l'Est quand à l'évolution de la part des 1% plus riche dans le revenu national. On constaste bien ici que la tendance est à la baisse en Afrique et à la hausse en Europe de l'Est.
+
+![Deuxièmes visu shiny](images/shiny2.png)
+Grâce à notre Shiny nous pouvons rapidement nous rendre compte des variables intéressante à étudier et des éventuelles comparaisons à effectuer.
+
+
 ### Etat actuel
 
 ```{r}
