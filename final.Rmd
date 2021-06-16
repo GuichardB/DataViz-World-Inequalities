@@ -417,7 +417,7 @@ kable(tail(final_country_dataset),caption = "Dataset final par pays")
 
 ### ShinyApp
 
-Dans ce projet, nous avons décider d'utiliser l'application Shiny comme un outil d'exploration de notre dataset.
+Dans ce projet, nous avons décidé d'utiliser l'application Shiny comme un outil d'exploration de notre dataset.
 Nous avons donc créé un dashboard permettant de sélectionner un indicateur du dataset ainsi qu'une période donnée et d'obtenir ainsi rapidement un graph de l'évolution de cette variable au niveau mondial.
 Par exemple, on peut ici observer que globalement au niveau mondial, le revenue national n'a cesser d'augmenter dpuis 1980.
 
@@ -433,14 +433,15 @@ Grâce à notre Shiny nous pouvons rapidement nous rendre compte des variables i
 
 ### Etat actuel
 
+Afin de débuter notre analyse du dataset, nous avons commencé par faire un constat global sur les inégalités dans le monde en 2019, date la plus récente pour laquelle nous avons des données. 
+Nous avons donc comparé la part dans le revenu national des 10% les plus riches de chaque région du monde, puis celle des 50% les plus pauvres. Le but était de voir quelles sont les régions du monde les plus touchées par les inégalités.
+
 ```{r}
 # Part des Top 10% de la population dans le revenu national en 2019
 final_region_dataset %>% filter(Year == "2019", Region !="World") %>%
 ggplot(aes(x= reorder(Region, -PTNIT10_in_percent), y=PTNIT10_in_percent, fill=Region)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(PTNIT10_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Top 10% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip() +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 8))
 
 ```
-
-
 
 ```{r}
 
@@ -450,16 +451,29 @@ ggplot(aes(x= reorder(Region, -PTNIB50_in_percent), y=PTNIB50_in_percent, fill=R
 
 ```
 
+Comme nous pouvons le voir à travers ces deux graphes, le constat est très net, il y a des inégalités dans chaque région du monde. Même pour la région la moins inégalitaire, l'Europe de l'Ouest, les 10% les plus riches de la population ont une part beaucoup plus élevée que les 50% les plus pauvres dans le revenu national.
+
+Les inégalités sont très fortes dans les régions du monde les plus pauvres, comme l'Afrique ou l'Amérique Latine. La question se pose alors sur une éventuelle corrélation entre la richesse d'un pays et ses inégalités.
+
+Nous avons alors vérifié si cette correlation existait bel et bien au travers de nouveaux graphes.
 
 ```{r message=FALSE}
+
+# Corrélation entre la hausse du revenu national et la part du revenu national des 1% les plus riches, en 2019
 final_region_dataset %>% filter(Year == "2019", Region!="World") %>%
 ggplot(aes(x=NI,y=PTNIT1_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse de revenu national et revenu des Top 1% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 ```
 
 ```{r message=FALSE}
+
+# Corrélation entre la hausse du revenu national et la part du revenu national des 50% les plus pauvres, en 2019
 final_region_dataset %>% filter(Year == "2019", Region!="World") %>%
 ggplot(aes(x=NI,y=PTNIB50_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse de revenu national et revenu des Bottom 50% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 ```
+
+D'après ces deux graphes, nous trouvons bel et bien une corrélation entre la richesse d'un pays et ses inégalités, bien qu'elle soit peu marquée. Nous retrouvons par exemple un outlier qui correspond à l'Amérique du Nord: en effet, cette région du monde est composée de deux des plus grandes puissances mondiales, mais présente beaucoup d'inégalités. 
+
+Il y a donc probablement un autre critère qui entre jeu dans la présence d'inégalités au sein d'un pays. Nous avons étudié d'autres critères dans la suite de ce rapport. 
 
 ### L'évolution
 
@@ -643,15 +657,30 @@ Désormais, grâce à l'extension de notre dataset au niveau des pays nous cherc
 
 ## Analyse au niveau des pays et causes potentielles
 
+Après avoir suivi l'évolution et les tendances des inégalités à travers le monde, nous nous sommes ensuite demandés pourquoi ces dernières ne font qu'accroitre d'années en années. 
+Pour répondre à cette question, nous nous sommes dit qu'il serait intéressant de comparer l'évolution des capitaux privés et publics de plusieurs pays, de 1990 à 2019.
+
+
 ```{r warning=FALSE}
-#Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
+#Comparaison de l'évolution des capitaux privés et public, de 1990 à 2019
 final_country_dataset%>%filter(Year>=1990, Pays!="Afrique du Sud" & Pays!="Japon" & Pays!="Mexique") %>% ggplot(aes(x=Year, group = Pays, color = Pays))+
 geom_line(aes(y=PatrimoineGouvernement/RevenuNational*100,linetype = "Public"))+
 geom_line(aes(y=PatrimoinePrivé/RevenuNational*100,linetype = "Privé"))+
 labs(title="Comparaison de l'évolution des capitaux privés et public", x="Année", y = "Part du revenu national (%)", linetype="Capitaux")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 ```
 
+Nous pouvons distinguer une tendance globale, vraie pour chaque pays: les capitaux privés ne font que d'augmenter d'années en années, alors que les capitaux publics, eux, baissent ou, au mieux, stagnent.
+
+Nous pouvons donc supposer que malgré une croissance économique importante avec une hausse des revenus des pays, ils ont probablement de moins en moins la capacité d'agir pour faire face aux inégalités au sein de leur population, avec la baisse de leur capital public.
+
+Malheureusement, nous n'avons aucun autre indicateur qui permet d'explorer les causes potentielles de ces inégalités et de leur évolution.
+
+
 ## Comparaison France/USA
+
+Dans la continuité de notre analyse, nous avons ensuite décidé de comparer deux pays entre eux, afin de voir les différences éventuelles. Nous avons choisi la France et les Etats-Unis, qui sont deux puissances mondiales. 
+
+Nous avons dans un premier temps comparé l'évolution de la part du revenu national des 1% les plus riches et des 50% les plus pauvres, dans chaque pays, de 1980 à 2019. L'objectif était de comparer l'évolution de la répartition du revenu national dans ces deux pays.
 
 ```{r}
 #Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs aux Etats-Unis, de 1980 à 2019
@@ -659,24 +688,57 @@ final_country_dataset %>% filter(Pays == "Etats-Unis", Year >= 1980) %>%
 ggplot(aes(x=Year))+geom_line(aes(y=RevenuNationalTop1), color="red") +geom_line(aes(y=RevenuNationalBottom50), color="blue") + labs(title="Etats-Unis", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
 
 ```
+
+Nous pouvons voir qu'aux Etats-Unis, les inégalités sont très marquées: depuis 1995, les 1% les plus riches gagnent plus que les 50% les plus pauvres, ce qui est impressionant. De plus, cette inégalité tend à s'agrandir car elle ne fait que monter depuis des années.
+
 ```{r}
 #Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
 final_country_dataset %>% filter(Pays == "France", Year >= 1980) %>%
 ggplot(aes(x=Year))+geom_line(aes(y=RevenuNationalTop1), color="red") +geom_line(aes(y=RevenuNationalBottom50), color="blue") + labs(title="France", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
 
 ```
+
+En ce qui concerne la France, les inégalités sont beaucoup moins creusées, mais bien présentes: les plus pauvres sont 50x plus nombreux que les plus riches (50% vs 1%) mais ils ne gagnent que 2x plus d'argent. En revanche, contrairement aux Etats-Unis, cette inégalité ne s'aggrandit pas, elle stagne.
+
+Nous avons ensuite décidé de comparé l'évolution d'un autre indicateur, la part du Patrimoine, des mêmes catégories de personnes, de 1980 à 2014 (nous n'avons pas de données plus récentes pour cet indicateur).
+
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
+final_country_dataset %>% filter(Pays == "Etats-Unis", Year >= 1980, Year <= 2014) %>%
+ggplot(aes(x=Year))+geom_bar(stat="identity",aes(y=PatrimoineTop1), color="red") +geom_bar(stat="identity", aes(y=PatrimoineBottom50), color="blue") + labs(title="Etats-Unis", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+```
+Aux Etats-Unis, les 1% les plus riches ont 10 à 20 fois plus de patrimoine que les 50% les plus pauvres: c'est énorme. On voit bien qu'en 35 ans, la part dans le patrimoine des plus riches ne fait qu'augmenter, alors que celle des plus pauvres tend vers 0.
+
 ```{r}
 #Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
 final_country_dataset %>% filter(Pays == "France", Year >= 1980) %>%
-ggplot(aes(x=Year))+geom_line(aes(y=PatrimoineTop1), color="red") +geom_line(aes(y=PatrimoineBottom50), color="blue") + labs(title="France", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+ggplot(aes(x=Year))+geom_bar(stat="identity",aes(y=PatrimoineTop1), color="red") +geom_bar(stat="identity", aes(y=PatrimoineBottom50), color="blue") + labs(title="France", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
 
 ```
+En France, les 1% les plus riches ont en moyenne 2 à 3 plus de patrimoine que les 50% les plus pauvres, ce qui reste inégalitaire. En revanche, la différence est bien moins importante qu'aux Etats-Unis. POur ce qui est de l'évolution de cette inégalité, elle tend à s'accroitre aussi, mais moins vite qu'aux US.
+
+Une fois que nous avons constaté la différence du niveau d'inégalités et de leur évolution au sein de ces 2 pays, nous nous sommes demandés si cela pouvait avoir un impact sur leur croissance économique. En effet, l'objectif était de voir si les Etats-Unis avancent plus vite avec les plus riches, ou sont retardés par les plus pauvres, ou si cela ne change rien par rapport au français où la richesse est déjà mieux répartie.
+
+Pour ce faire, nous avons comparé l'évolution du revenu national annuel par habitant dans les deux pays.
+
+```{r}
+#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
+final_country_dataset %>% filter(Pays == "France", Year >= 1980) %>%
+ggplot(aes(x=Year))+geom_line(aes(y=RevenuNational), color="red") + labs(title="France", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+
+```
+
 ```{r}
 #Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
 final_country_dataset %>% filter(Pays == "Etats-Unis", Year >= 1980) %>%
-ggplot(aes(x=Year))+geom_line(aes(y=PatrimoineTop1), color="red") +geom_line(aes(y=PatrimoineBottom50), color="blue") + labs(title="Etats-Unis", x="Année", y = "Part du patrimoine (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+ggplot(aes(x=Year))+ geom_line(aes(y=RevenuNational), color="red")  + labs(title="Etats-Unis", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
 
 ```
+
+On voit clairement que les courbes sont relativement similaires, ce qui prouve que les deux pays ont une croissance similaire depuis 1980. D'ailleurs, on apperçoit très bien l'impact du crash boursier de 2008.
+
+Nous pouvons donc en conclure que les inégalités au sein d'un pays développé n'influent en aucun cas sur sa croissance économique, dans un sens ou dans l'autre.
+
 ***
 
 # Conclusion
