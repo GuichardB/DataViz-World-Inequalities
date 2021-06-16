@@ -26,7 +26,8 @@ knitr::opts_chunk$set(echo = TRUE)
 - [Conclusion](#conclusion)
   1. [Ce qu'on a appris des données](#ce-qu'on-a-appris-des-données)
   2. [Les difficultés rencontrées](#les-difficultés-rencontrées)
-  3. [Retours d'expérience](#retours-d'expérience)
+  3. [Expérience avec PowerBI](#Expérience avec PowerBI)
+  4. [Retours d'expérience](#retours-d'expérience)
 
 ***
 
@@ -41,7 +42,7 @@ Nous allons présenter ici les données choisies et notre plan d'analyse.
 
 #### World Inequality Database
 
-Les données correspondent à une combinaison de plusieurs sources de données sur les inégalités dans le monde : comptes nationaux, enquêtes, données fiscales et classements de richesse. D'après les chercheurs à l'origine de ce dataset, cela permet d'avoir un suivi de l'évolution plus précis et à tout les niveaux des richesses dans le monde.
+Les données correspondent à une combinaison de plusieurs sources de données sur les inégalités dans le monde : comptes nationaux, enquêtes, données fiscales et classements de richesse. D'après les chercheurs à l'origine de ce dataset, cela permet d'avoir un suivi de l'évolution plus précis et à tous les niveaux des richesses dans le monde.
 
 Les données sont accessibles sur le site [WID](https://wid.world/data/).
 
@@ -64,9 +65,9 @@ Les fichers WID_data_XX.csv pour chaque pays qui contiennent chacun 7 variables 
 
 * country: code pays/region (voir WID_countries.csv)
 
-* variable: WID code pour les variables (détaillés plus loin)
+* variable: WID code pour les variables (détaillé plus loin)
 
-* percentile: WID code pour les pourcentages (détaillés plus loin)
+* percentile: WID code pour les pourcentages (détaillé plus loin)
 
 * year: l'année de cette donnée (de 1800 à 2019)
 
@@ -76,7 +77,7 @@ Les fichers WID_data_XX.csv pour chaque pays qui contiennent chacun 7 variables 
 
 * pop: code indiquant l'unité de population auquel la donnée fait référence
 
-Les fichiers WID_metadata_XX.csv qui contiennent chacun 17 variables précisant pour chaque fichier des descriptions précises de chaque variable du dataset,l'unités, la source et la méthode utilisée pour chaque observation.
+Les fichiers WID_metadata_XX.csv qui contiennent chacun 17 variables précisant pour chaque fichier des descriptions précises de chaque variable du dataset,l'unité, la source et la méthode utilisée pour chaque observation.
 
 La signification de chaque variable est donc décrite dans les fichers metadata. Le code WID pour les variables répond à la logique suivante:
 
@@ -102,13 +103,13 @@ Nous avons testé cet outil avec un premier dataset contenant toutes les donnée
 
 ### Les variables
 
-Les pricipales variables par pays et par année sont :
+Les principales variables par pays et par année sont :
 
 **Per adult national income** (Decimal) : Le revenu national vise à mesurer le revenu total dont disposent les résidents d'un pays donné. Il est égal au produit intérieur brut, moins le capital fixe utilisé dans les processus de production, plus le revenu étranger net gagné par les résidents dans le reste du monde. L'économie nationale - au sens de la comptabilité nationale - comprend tous les secteurs domestiques, c'est-à-dire toutes les entités qui résident dans un pays donné (au sens de leur activité économique), qu'elles appartiennent au secteur privé, au secteur des entreprises, au secteur des administrations publiques. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage). Cela revient à supposer qu'il n'y a pas de partage des ressources au sein des couples.
 
 **Per adult GDP** (Decimal) : Le produit intérieur brut est la valeur totale des biens et services produits par l'économie nationale. L'économie nationale - au sens de la comptabilité nationale - comprend tous les secteurs intérieurs, c'est-à-dire toutes les entités qui résident dans un pays donné (au sens de leur activité économique), qu'elles appartiennent au secteur privé, au secteur des entreprises, au secteur des administrations publiques. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage). Cela revient à supposer qu'il n'y a pas de partage des ressources au sein des couples.
 
-**Income Inequality** (Decimal) : Le revenu national avant impôt est la somme de tous les flux de revenu personnel avant impôt revenant aux propriétaires des moyens de production, à savoir le travail et le capital, avant de prendre en compte le fonctionnement du système d'imposition/transfert, mais après avoir pris en compte le fonctionnement du système de retraite. La différence centrale entre le revenu personnel des facteurs et le revenu avant impôt est le traitement des pensions, qui sont comptabilisées sur une base de contribution par source de  revenu et sur une base de distribution par le revenu avant impôt. La population est constituée des individus âgés de plus de 20 ans. L'unité de base est l'unité fiscale définie par les administrations fiscales nationales pour mesurer l'impôt sur le revenu des personnes physiques.
+**Income Inequality** (Decimal) : Le revenu national avant impôt est la somme de tous les flux de revenu personnel avant impôt revenant aux propriétaires des moyens de production, à savoir le travail et le capital, avant de prendre en compte le fonctionnement du système d'imposition/transfert, mais après avoir pris en compte le fonctionnement du système de retraite. La différence centrale entre le revenu personnel des facteurs et le revenu avant impôt est le traitement des pensions, qui sont comptabilisées sur une base de contribution par source de revenu et sur une base de distribution par le revenu avant impôt. La population est constituée des individus âgés de plus de 20 ans. L'unité de base est l'unité fiscale définie par les administrations fiscales nationales pour mesurer l'impôt sur le revenu des personnes physiques.
 
 - Top 10% share : Part des 10% supérieurs
 - Middle 40% share : Part des 40% du milieu
@@ -119,7 +120,7 @@ Les pricipales variables par pays et par année sont :
 
 **Wealth-income ratio** (Decimal) : Le rapport richesse-revenu est la division de la richesse nationale par le revenu national.
 
-**Wealth Inequality** (Decimal) : Le patrimoine personnel net est la valeur totale des actifs non financiers et financiers (logement, terrains, dépôts, obligations, actions, etc.) détenus par les ménages, moins leurs dettes. . Le secteur des particuliers ou des ménages - au sens de la comptabilité nationale - comprend tous les ménages et les particuliers (y compris ceux vivant en institution), ainsi que les entreprises non constituées en société dont les comptes ne sont pas séparés de ceux des ménages qui les possèdent. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage) mais les ressources sont réparties de manière égale au sein des couples.
+**Wealth Inequality** (Decimal) : Le patrimoine personnel net est la valeur totale des actifs non financiers et financiers (logement, terrains, dépôts, obligations, actions, etc.) détenus par les ménages, moins leurs dettes. Le secteur des particuliers ou des ménages - au sens de la comptabilité nationale - comprend tous les ménages et les particuliers (y compris ceux vivant en institution), ainsi que les entreprises non constituées en société dont les comptes ne sont pas séparés de ceux des ménages qui les possèdent. La population est composée des individus âgés de plus de 20 ans. L'unité de base est l'individu (plutôt que le ménage) mais les ressources sont réparties de manière égale au sein des couples.
 
 - Top 10% share : Part des 10% supérieurs
 - Middle 40% share : Part des 40% du milieu
@@ -180,9 +181,10 @@ Enfin, il faudra savoir tirer des conclusions quant aux causes de ces inégalit�
 
 ### Import des library
 
-Pour réaliser se projet de visualitation de données avec R nous avons utilisés l'ensemble de librairies du 'tinyverse', 'reshape2' ainsi que 'ggthemes' pour améliorer l'esthétique des graphes.
+Pour réaliser ce projet de visualisation de données avec R nous avons utilisé l'ensemble de librairies du 'tidyverse', 'reshape2', 'knitr' ainsi que 'ggthemes' pour améliorer l'esthétique des graphes.
 
 ```{r message = FALSE}
+
 library(tidyverse)
 library(reshape2)
 library(ggthemes)
@@ -195,9 +197,12 @@ library(knitr)
 Notre objectif initial était de traiter les données au niveau de chaque grande région du monde, cependant certains indicateurs sont disponibles uniquement au niveau des pays. Nous avons donc décidé d'utiliser 2 datasets différents afin de pouvoir réaliser un maximum de visualisations intéressantes.
 
 L'outil de création de datasets personnalisés proposé par le site permet d'utiliser seulement 5 indicateurs par datasets.
-Donc pour les 2 datasets nous avons dut télécharger les données par morceaux et les agréer ensemble par la suite.
+Donc pour les 2 datasets nous avons dû télécharger les données par morceaux et les agréer ensemble par la suite.
 
 ```{r message = FALSE, warning=FALSE}
+
+#Importation des datasets dans R
+
 world_region_data <- read_delim("data/World_Region_Data/world_region_data.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
 
@@ -212,11 +217,14 @@ world_country_data2 <- read_delim("data/World_Country_Data/world_country_data2.c
 
 world_country_data3 <- read_delim("data/World_Country_Data/world_country_data3.csv", 
     ";", escape_double = FALSE, trim_ws = TRUE)
+
 ```
 
 ### Agrégation des datasets
 
 ```{r}
+#Agrégation des datasets
+
 region_dataset <- merge(x = world_region_data, y = world_region_data2, by = "Year", all = TRUE)
 region_dataset <- data.frame(region_dataset)
 region_dataset <- tibble(region_dataset)
@@ -226,16 +234,20 @@ country_dataset <- merge(x = world_country_data1, y = world_country_data2, by = 
 country_dataset <- merge(x = country_dataset, y = world_country_data3, by = "Year", all = TRUE)
 country_dataset <- data.frame(country_dataset)
 country_dataset <- tibble(country_dataset)
+
 ```
 
 ### Création de sous-datasets pour séparer les données par indicateurs
 
 Afin de faciliter le travail de création de visualisations nous avons réalisé que nous devions changer le format de nos données.
-En effet nous voulons avoir en parametre les indicateurs sans les régions/pays où ils ont été mesuré et avoir ainsi tout les pays/régions dans une colonne à part.
+En effet nous voulions avoir en paramètre les indicateurs sans les régions/pays où ils ont été mesurés et avoir ainsi tous les pays/régions dans une colonne à part entière.
 Pour ce faire un gros travail de prétraitement est nécessaire.
 On extrait tout d'abord chaque indicateur dans un dataframe propre.
 
 ```{r}
+
+#Création d'un dataset pour chaque indicateur
+
 NIdataset <- region_dataset %>% select("Year", ends_with("NI"))
 GDPdataset <- region_dataset %>% select("Year", ends_with("GDP"))
 PTNIB40dataset <- region_dataset %>% select("Year", ends_with("PTNIB40"))
@@ -260,10 +272,15 @@ PatMedium40 <- country_dataset %>% select("Year", ends_with("Patrimoine.Medium40
 PatBottom50 <- country_dataset %>% select("Year", ends_with("Patrimoine.Bottom50.."))
 PatTop1 <- country_dataset %>% select("Year", ends_with("Patrimoine.Top1.."))
 rm(country_dataset,world_country_data1,world_country_data2,world_country_data3)
+
 ```
+
 On vient ensuite regrouper chaque observation par régions/pays et appliquer des transformations aux variables pour les rendre plus lisibles.  
 
 ```{r}
+
+#Renommer les variables, changer de format le dataset (création d'une colonne "Année", une colonne "variable" (=Pays) et une colonne "value", que l'on transforme en pourcentage)
+
 tempdataset <- PTNIT10dataset %>% rename("World"=WorldPTNIT10,"Western Europe"=WesternEuropePTNIT10, Asia=AsiaPTNIT10, "Eastern Europe"=EasternEuropePTNIT10, "Northern America"=NorthernAmericaPTNIT10, Oceania=OceaniaPTNIT10, "Latin America"=LatinAmericaPTNIT10, Africa=AfricaPTNIT10) %>%
 melt(id.vars="Year") %>%
 filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
@@ -298,20 +315,38 @@ tempdataset6 <- GDPdataset %>% rename("World"=WorldGDP,"Western Europe"=WesternE
 melt(id.vars="Year") %>%
 filter(variable=="World"|variable=="Western Europe"|variable=="Asia"|variable=="Eastern Europe"|variable=="Northern America"|variable=="Oceania"|variable=="Latin America"|variable=="Africa")%>%
 rename(GDP=value)
+
 ```
-On merge tout les indicateurs dans un seul dataset 
+
+On merge ensuite tous les indicateurs dans un seul dataset.
+
 ```{r}
+
+#Création du dataset final pour les régions (merge de tous les autres avec la variable "Année")
+
 final_region_dataset <- merge(x = tempdataset, y = tempdataset2, by = c("Year", "variable"), all = TRUE)
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset3, by = c("Year", "variable"), all = TRUE)
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset4, by = c("Year", "variable"), all = TRUE)
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset5, by = c("Year", "variable"), all = TRUE)
 final_region_dataset <- merge(x = final_region_dataset, y = tempdataset6, by = c("Year", "variable"), all = TRUE)%>%
+    
+#On renomme la colomne "variable" avec "Region"
+    
 rename(Region=variable)
+
+#On supprime les datasets intermédiaires
+
 rm(tempdataset, tempdataset2, tempdataset3,tempdataset4,tempdataset5,tempdataset6)
 rm(NIdataset,GDPdataset,PTNIT1dataset,PTNIT10dataset,PTNIM40dataset,PTNIB50dataset,PTNIB40dataset)
+
 ```
-De même pour le dataset par pays.
+
+On fait de même pour le dataset par pays.
+
 ```{r}
+
+#Renommer les variables, changer de format le dataset (création d'une colonne "Year", une colonne "variable" (=Pays) et une colonne "value", que l'on renomme par le nom de l'indicateur en question)
+
 tempdataset <- PatGouvdataset %>% rename("France"=France_PatrimoineGouvernement,"Afrique du Sud"=AfriqueSud_PatrimoineGouvernement, "Australie"=Australie_PatrimoineGouvernement, "Canada"=Canada_PatrimoineGouvernement, "Chine"=Chine_PatrimoineGouvernement, "Danemark"=Danemark_PatrimoineGouvernement, "Inde"=Inde_PatrimoineGouvernement, "Royaume-Uni"=RU_PatrimoineGouvernement, "Japon"=Japon_PatrimoineGouvernement, "Mexique"=Mexique_PatrimoineGouvernement, "Russie"=Russie_PatrimoineGouvernement, "Etats-Unis"=US_PatrimoineGouvernement) %>%
 melt(id.vars="Year") %>%
 mutate(PatrimoineGouvernement = value)%>%
@@ -382,6 +417,8 @@ melt(id.vars="Year") %>%
 mutate(PatrimoineMedium40 = value*100)%>%
 subset (select = -value)
 
+#Création du dataset final pour les pays (merge de tous les autres avec la variable "Year")
+
 final_country_dataset <- merge(x = tempdataset, y = tempdataset2, by = c("Year", "variable"), all = TRUE)
 final_country_dataset <- merge(x = final_country_dataset, y = tempdataset3, by = c("Year", "variable"), all = TRUE)
 final_country_dataset <- merge(x = final_country_dataset, y = tempdataset4, by = c("Year", "variable"), all = TRUE)
@@ -396,20 +433,30 @@ final_country_dataset <- merge(x = final_country_dataset, y = tempdataset12, by 
 final_country_dataset <- merge(x = final_country_dataset, y = tempdataset13, by = c("Year", "variable"), all = TRUE)
 final_country_dataset <- merge(x = final_country_dataset, y = tempdataset14, by = c("Year", "variable"), all = TRUE)
 
+#On renomme la colomne "variable" avec "Pays"
+
 final_country_dataset <- final_country_dataset %>% rename(Pays=variable)
+
+#On supprime les datasets intermédiaires
+
 rm(tempdataset, tempdataset2, tempdataset3,tempdataset4,tempdataset5,tempdataset6,tempdataset7,tempdataset8,tempdataset9,tempdataset10,tempdataset11,tempdataset12,tempdataset13,tempdataset14)
 rm(PatGouvdataset,PatPrivdataset,PIBdataset,RatioPatRevdataset,RevNatdataset,RevNatTop1dataset,RevNatTop10dataset,RevNatMedium40dataset,RevNatBottom50dataset,CapNatdataset,PatTop1,PatTop10,PatMedium40,PatBottom50)
+
 ```
 
 ### Visualisation rapide des données
 
-Après prétraitement de nos 2 datasets on obtien les résultats suivants :
+Après prétraitement de nos 2 datasets on obtient les résultats suivants :
 
 ```{r error=FALSE}
+
 kable(tail(final_region_dataset), caption = "Dataset final par régions")
+
 ```
 ```{r error=FALSE}
+
 kable(tail(final_country_dataset),caption = "Dataset final par pays")
+
 ```
 
 
@@ -418,36 +465,40 @@ kable(tail(final_country_dataset),caption = "Dataset final par pays")
 ### ShinyApp
 
 Dans ce projet, nous avons décidé d'utiliser l'application Shiny comme un outil d'exploration de notre dataset.
-Nous avons donc créé un dashboard permettant de sélectionner un indicateur du dataset ainsi qu'une période donnée et d'obtenir ainsi rapidement un graph de l'évolution de cette variable au niveau mondial.
-Par exemple, on peut ici observer que globalement au niveau mondial, le revenue national n'a cesser d'augmenter dpuis 1980.
+Nous avons donc créé un dashboard permettant de sélectionner un indicateur du dataset ainsi qu'une période donnée et d'obtenir ainsi rapidement un graphe de l'évolution de cette variable au niveau mondial.
+Par exemple, on peut ici observer que globalement au niveau mondial, le revenu national n'a cessé d'augmenter depuis 1980.
 
 ![Première visu shiny](images/shiny1.png)
 
 La deuxième fonctionnalité proposée par notre dashboard permet de comparer cette évolution entre deux régions du monde.
-Par exemple, on peut ici observer la différence entre l'Afrique et l'Europe de l'Est quand à l'évolution de la part des 1% plus riche dans le revenu national. On constaste bien ici que la tendance est à la baisse en Afrique et à la hausse en Europe de l'Est.
+Par exemple, on peut ici observer la différence entre l'Afrique et l'Europe de l'Est quant à l'évolution de la part des 1% plus riches dans le revenu national. On constate bien ici que la tendance est à la baisse en Afrique et à la hausse en Europe de l'Est.
 
 ![Deuxièmes visu shiny](images/shiny2.png)
 
-Grâce à notre Shiny nous pouvons rapidement nous rendre compte des variables intéressante à étudier et des éventuelles comparaisons à effectuer.
+Grâce à notre Shiny nous pouvons rapidement nous rendre compte des variables intéressantes à étudier et des éventuelles comparaisons à effectuer.
 
 
 ### Etat actuel
 
 Afin de débuter notre analyse du dataset, nous avons commencé par faire un constat global sur les inégalités dans le monde en 2019, date la plus récente pour laquelle nous avons des données. 
+
 Nous avons donc comparé la part dans le revenu national des 10% les plus riches de chaque région du monde, puis celle des 50% les plus pauvres. Le but était de voir quelles sont les régions du monde les plus touchées par les inégalités.
 
 ```{r}
-# Part des Top 10% de la population dans le revenu national en 2019
+
+# Part des 10% les plus riches de la population dans le revenu national en 2019
+
 final_region_dataset %>% filter(Year == "2019", Region !="World") %>%
-ggplot(aes(x= reorder(Region, -PTNIT10_in_percent), y=PTNIT10_in_percent, fill=Region)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(PTNIT10_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Top 10% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip() +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 8))
+ggplot(aes(x= reorder(Region, -PTNIT10_in_percent), y=PTNIT10_in_percent, fill=Region)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(PTNIT10_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Top 10% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip() +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust=1))
 
 ```
 
 ```{r}
 
-# Part des Bottom 50% de la population dans le revenu national en 2019
+# Part des 50% les plus pauvres de la population dans le revenu national en 2019
+
 final_region_dataset %>% filter(Year == "2019", Region !="World") %>%
-ggplot(aes(x= reorder(Region, -PTNIB50_in_percent), y=PTNIB50_in_percent, fill=Region)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(PTNIB50_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Bottom 50% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip()  +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 2.5))
+ggplot(aes(x= reorder(Region, -PTNIB50_in_percent), y=PTNIB50_in_percent, fill=Region)) + geom_bar(stat="identity") + ylim(0,65) + geom_text(aes(label=paste0(PTNIB50_in_percent, "%"), hjust=-0.1))+ labs(title="Part des Bottom 50% de la population dans le revenu national en 2019", x="Régions du monde", y = "Part du revenu national (%)") + scale_fill_brewer(palette = "Pastel1") + coord_flip()  +  theme_hc()+ scale_colour_hc() + theme(legend.position = "none", plot.title = element_text(size = rel(1.2), hjust = 1))
 
 ```
 
@@ -460,15 +511,19 @@ Nous avons alors vérifié si cette correlation existait bel et bien au travers 
 ```{r message=FALSE}
 
 # Corrélation entre la hausse du revenu national et la part du revenu national des 1% les plus riches, en 2019
+
 final_region_dataset %>% filter(Year == "2019", Region!="World") %>%
-ggplot(aes(x=NI,y=PTNIT1_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse de revenu national et revenu des Top 1% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+ggplot(aes(x=NI,y=PTNIT1_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse du revenu national et revenu des Top 1% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right") + theme(plot.title = element_text(size = rel(1.2), hjust = 0.2))
+
 ```
 
 ```{r message=FALSE}
 
 # Corrélation entre la hausse du revenu national et la part du revenu national des 50% les plus pauvres, en 2019
+
 final_region_dataset %>% filter(Year == "2019", Region!="World") %>%
-ggplot(aes(x=NI,y=PTNIB50_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse de revenu national et revenu des Bottom 50% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+ggplot(aes(x=NI,y=PTNIB50_in_percent))+geom_point(aes(color=Region))+ labs(title="Corrélation entre hausse du revenu national et revenu des Bottom 50% en 2019", x="Années", y = "Part du revenu national (%)",color = "Régions" )+geom_smooth(method=lm, se=FALSE, linetype="dashed",color="darkred")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right") + theme(plot.title = element_text(size = rel(1.2), hjust = 0.22))
+
 ```
 
 D'après ces deux graphes, nous trouvons bel et bien une corrélation entre la richesse d'un pays et ses inégalités, bien qu'elle soit peu marquée. Nous retrouvons par exemple un outlier qui correspond à l'Amérique du Nord: en effet, cette région du monde est composée de deux des plus grandes puissances mondiales, mais présente beaucoup d'inégalités. 
@@ -477,64 +532,100 @@ Il y a donc probablement un autre critère qui entre jeu dans la présence d'in�
 
 ### L'évolution
 
-Après avoir étudier l'état actuel des inégalités dans le monde, on se pose la question de savoir si il en a toujours été ainsi et si certaines tendances se dégagent depuis toutes ces années.
+Après avoir étudié l'état actuel des inégalités dans le monde, nous nous sommes posé la question de savoir s'il en a toujours été ainsi et si certaines tendances se dégagent depuis toutes ces années.
 
 ```{r}
+
+#Evolution de la répartition du revenu national dans le monde (création puis suppression d'un dataset temporaire pour ce graphe)
+
 world <- filter(final_region_dataset, Region== "World")
 world <- melt(world[,c('Year','PTNIT10_in_percent','PTNIM40_in_percent','PTNIB50_in_percent')],id.vars =1)
 
 world%>%
 ggplot(aes(x=Year))+geom_col(aes(y=value, fill=variable))+ scale_fill_discrete(name = "Classes", labels = c("Top 10%", "Middle 40%", "Bottom 50%"))+
-labs(title="Evolution de la part de chaque classe dans le revenu national dans le monde", x="Années", y = "Part du revenu national (%)" )+theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+labs(title="Evolution de la répartition du revenu national dans le monde", x="Années", y = "Part du revenu national (%)" )+theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+
 rm(world)
+
 ```
 
-Afin d'avoir une première idée de l'évolution de ces inégalités depuis 1980 nous avons réaliser une représentation de l'évolution de la part dans le revenu national pour chaque tranche de revenu.
-On observe que, au niveau mondial il y a autant d'inégalités dans le monde en 1980 qu'en 2019. On observe une légére augmentation dans les années 2000 mais qui est rapidement corrigées.
+Afin d'avoir une première idée de l'évolution de ces inégalités depuis 1980 nous avons réalisé une représentation de l'évolution de la répartition du revenu national pour chaque tranche de revenu au sein de la population.
+
+On observe qu'au niveau mondial, il y a autant d'inégalités dans le monde en 1980 qu'en 2019. On observe une légére augmentation dans les années 2000 mais qui est rapidement corrigée.
 
 ```{r}
+
+#Evolution de la part du revenu national des Top 1% et Bot 50% de 1980 à 2019
+
 final_region_dataset %>% filter(Region == "World") %>%
 ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent, color="Top 1%"))+geom_line(aes(y=PTNIB50_in_percent, color="Bot 50%")) + labs(title="Evolution de la part du revenu national des Top 1% et Bot 50% de 1980 à 2019", x="Années", y = "Part du revenu national (%)",color = "Classes" )+ scale_x_continuous(limits = c(1980,2019), expand = c(0, 0)) + scale_y_continuous(limits = c(5,25), expand = c(0, 0))
+
 ```
 
-Afin de confirmer cette observation, nous étudions maintenant plus précisement l'évolution de la part de 50% plus pauvres VS les 1% plus riches.
-On observe ici que les très riches se sont plus enrichis avant les années 2000 et que les plus pauvres commence a gagner plus depuis 2006.
-La question que l'on est ammené à se poser ensuite : Qu'en est-il lorsque l'on regarde plus précisement chaque région ?
+Afin de confirmer cette observation, nous étudions maintenant plus précisément l'évolution de la part de 50% plus pauvres VS les 1% plus riches.
+
+On observe ici que les personnes très riches se sont plus enrichies avant les années 2000 et que les plus pauvres commencent à gagner plus depuis 2006.
+
+La question que l'on est amené à se poser ensuite : Qu'en est-il lorsque l'on regarde plus précisément chaque région ?
 
 ```{r warning=FALSE}
+
 #Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019
+
 final_region_dataset %>% filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+
 ```
 
-Ici nous cherchons à étudier l'évolution de la part de 10% plus riches dans le revenu national entre 1980 et 2019.
-On observe que dans les régions dîtes "plus développées" tel que l'Europe ou l'Amérique du Nord, cette part est en augmentation constante depuis 1980.
-A contrario, dans les régions dîtes "moins développées" tel que l'Afrique ou l'Asie, cette part commence à baisser depuis 2010.
+Ici nous cherchons à étudier l'évolution de la part des 10% les plus riches dans le revenu national entre 1980 et 2019.
+
+On observe que dans les régions dîtes "plus développées" telles que l'Europe ou l'Amérique du Nord, cette part est en augmentation constante depuis 1980.
+
+A contrario, dans les régions dîtes "moins développées" telles que l'Afrique ou l'Asie, cette part commence à baisser depuis 2010.
 
 ```{r warning=FALSE}
+
 #Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
-final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+
+final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right", plot.title = element_text(size = rel(1.2), hjust = 0.2))
+
 ```
 
-Afin d'avoir une analyse plus précise nous allons maintenant observer l'évolution de cette part chez les 50% plus pauvres.
-On observe qu'a première vu, dans la plupart des régions les plus pauvres gagnent gagnent de moins en moins. 
-Cependant, on remarque que depuis les années 2000, cette décroissance est de moins en moins forte et dans certaines régions comme en Afrique, les plus pauvres commencent a s'enrichir.
-On en conclus qu'il y a bien des tendances que se dessinent d'années en années et on a donc cherché un moyen d'étudier plus précisement ces variations.
+Afin d'avoir une analyse plus précise nous allons maintenant observer l'évolution de cette part chez les 50% les plus pauvres.
+
+On observe qu'à première vue, dans la plupart des régions, les plus pauvres gagnent de moins en moins.
+
+Cependant, on remarque que depuis les années 2000, cette décroissance est de moins en moins forte et dans certaines régions comme en Afrique, les plus pauvres commencent à s'enrichir.
+
+On en conclu qu'il y a bien des tendances qui se dessinent d'années en années et on a donc cherché un moyen d'étudier plus précisement ces variations.
+
 
 ```{r message = FALSE, warning = FALSE}
+
+#Evolution du taux de croissance du Revenu National dans le monde
+
 final_region_dataset %>% 
 filter(Region=="World") %>%
 mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
-ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de croissance du National Income dans le monde", x="Années", y = "Taux de croissance NI")
+ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de croissance du Revenu National dans le monde", x="Années", y = "Taux de croissance RN")
+
 ```
 
-Afin de faire ressortir de nos données le taux de croissance d'e chaque indicateur'un chaque année, on créer une nouvelle colonne qui prend la valeur de l'indicateur voulu une année et lui soustrait sa valeur de l'année précendente. On ajout ensuite le calcul du pourcentage de ce changement par rapport à l'année précendente et on obtient le taux de croissance de cet indicteur.
-Ici on test cette approche sur l'évolution du revenu national dans le monde.
-On observe notamment qu'il y a eut un boost de croissance à l'an 2000 qui commence a diminuer.
-Le crash de 2006, bien que lisser par la courbe moyenne reste bien visible.
+Afin de faire ressortir de nos données le taux de croissance de chaque indicateur pour chaque année, on a créé une nouvelle colonne qui prend la valeur de l'indicateur voulu pour une année et lui soustrait sa valeur de l'année précédente.
 
-Quand est il de cette observation pour chaque région ?
+On ajoute ensuite le calcul du pourcentage de ce changement par rapport à l'année précédente et on obtient le taux de croissance de cet indicteur.
+
+Ici on a testé cette approche sur l'évolution du revenu national dans le monde.
+
+On observe notamment qu'il y a eu un boost de croissance jusqu'à l'an 2000, où cela a commencé à diminuer.
+
+Le crash de 2006, bien que lissé par la courbe moyenne, reste bien visible.
+
+Qu'en est-il de cette observation pour chaque région ?
 
 ```{r message = FALSE, warning = FALSE}
+
+#Evolution du taux de croissance du Revenu National (Création puis suppression de datasets temporaires pour réaliser le graphe)
+
 tempEE <- final_region_dataset %>% 
 filter(Region=="Eastern Europe") %>%
 mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100)
@@ -557,28 +648,39 @@ tempNA <- final_region_dataset %>%
 filter(Region=="Northern America") %>%
 mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change = Change/Previous_Year*100)
 
-ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance du National Income", x="Années", y = "Taux de croissance NI",color = "Régions" )+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance du Revenu National", x="Années", y = "Taux de croissance RN",color = "Régions" )+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+
 rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
+
+
 ```
 
 
-Sur cette évolution lissé du taux de croissance du revenu national par région, on oberve que les régions suivent toutes la tendance mondiale. Cependant certaines régions comme les Amériques ou l'Asie décroient plus rapidement comparées à des régions comme l'Europe ou la croissance semble repartir.
+Sur cette évolution du taux de croissance du revenu national par région, on oberve que les régions suivent toutes la tendance mondiale. Cependant certaines régions comme les Amériques ou l'Asie décroient plus rapidement comparées à des régions comme l'Europe où la croissance semble repartir.
 
-Quand est-it de cette évolution de la croissance dans les différentes tranches de la population ?
+Qu'en est-il de cette évolution de la croissance dans les différentes tranches de la population ?
 
 ```{r message = FALSE, warning = FALSE}
+
+#Evolution du taux d'enrichissement des Top 1% dans le monde
+
 final_region_dataset %>% 
 filter(Region=="World") %>%
 mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
-ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de l'enrichissement des Top 1% dans le monde", x="Années", y = "Taux de croissance de la part dans le revenu nationa")
+ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux d'enrichissement des Top 1% dans le monde", x="Années", y = "Taux de croissance de la part dans le revenu national")
+
 ```
 
-Ici on cherche à étudier l'évolution de la vitesse à laquelle les 1% plus riches s'enrichisse.
-On observe que depuis les années 2000 cette vitesse a diminuée mais qu'elle tent peut être à repartir.
+Ici on cherche à étudier l'évolution de la vitesse à laquelle les 1% les plus riches s'enrichissent.
+
+On observe que depuis les années 2000 cette vitesse a diminué mais qu'elle tend peut-être à repartir.
 
 Qu'en est-il au niveau de chaque région ?
 
 ```{r  message = FALSE, warning = FALSE}
+
+#Evolution du taux de croissance de l'enrichissement des Top 1% (Création puis suppression de datasets temporaires pour réaliser le graphe)
+
 tempEE <- final_region_dataset %>% 
 filter(Region=="Eastern Europe") %>%
 mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
@@ -602,26 +704,38 @@ filter(Region=="Northern America") %>%
 mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
 
 ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance de l'enrichissement des Top 1%", x="Années", y = "Taux de croissance de l'enrichissement",color = "Régions" )+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+
+
 rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
+
+
 ```
 
-Sur cette évolution lissé du taux de croissance des 1% plus riches par région, on oberve que les régions suivent toutes la tendance mondiale. Cependant, dans certaines régions comme l'Asie ou l'Océanie la vitesse d'enrichissement des plus riches semble récement s'être réaccelérée.
+Sur cette évolution du taux de croissance des 1% les plus riches par région, on observe que les régions suivent toutes la tendance mondiale. Cependant, dans certaines régions comme l'Asie ou l'Océanie la vitesse d'enrichissement des plus riches semble récemment s'être réaccélérée
 
-Quand est-il de cette évolution de la croissance chez les 50% plus pauvres de la population ?
+Qu'en est-il de cette évolution de la croissance chez les 50% les plus pauvres de la population ?
 
 ```{r message = FALSE, warning = FALSE}
+
+#Evolution du taux d'enrichissement des Bottom 50% dans le monde
+
 final_region_dataset %>% 
 filter(Region=="World") %>%
 mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
-ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de l'enrichissement des Bottom 50% dans le monde", x="Années", y = "Taux de croissance de la part dans le revenu nationa")
+ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux d'enrichissement des Bottom 50% dans le monde", x="Années", y = "Taux de croissance de la part dans le revenu national")
+
 ```
 
-Ici on cherche à étudier l'évolution de la vitesse à laquelle les 50% plus pauvres s'enrichisse.
+Ici on cherche à étudier l'évolution de la vitesse à laquelle les 50% plus pauvres s'enrichissent.
+
 On observe une courbe opposée à celle des 1% plus riches, ce qui est logique.
 
 Qu'en est-il au niveau de chaque région ?
 
 ```{r message = FALSE, warning = FALSE}
+
+#Evolution du taux de croissance de l'enrichissement des Bottom 50% (Création puis suppression de datasets temporaires pour réaliser le graphe)
+
 tempEE <- final_region_dataset %>% 
 filter(Region=="Eastern Europe") %>%
 mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
@@ -645,24 +759,29 @@ filter(Region=="Northern America") %>%
 mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100)
 
 ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance de l'enrichissement des Bottom 50%", x="Années", y = "Taux de croissance de l'enrichissement",color = "Régions" )+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+
 rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
 ```
 
-Sur cette évolution lissé du taux de croissance des 50% plus pauvres par région, on oberve que les régions suivent toutes la tendance mondiale. Mais ici encore certaines régions comme l'Asie ou l'Océanie voit la vitesse d'enrichissement des plus pauvres s'accelérée récement.
+Sur cette évolution du taux de croissance des 50% les plus pauvres par région, on observe que les régions suivent toutes la tendance mondiale. Mais ici encore certaines régions comme l'Asie ou l'Océanie voient la vitesse d'enrichissement des plus pauvres s'accélérer récemment.
 
 Au travers de cette première étape, nous avons pu établir la présence d'inégalités dans les différentes tranches de population et leur localisation dans les diverses régions du monde. 
-De plus, ous avons pu étudier l'évolution de ces inégalités au cours du temps et les éventuelles tendances qui s'en dégageaient.
+
+De plus, nous avons pu étudier l'évolution de ces inégalités au cours du temps et les éventuelles tendances qui s'en dégageaient.
 
 Désormais, grâce à l'extension de notre dataset au niveau des pays nous cherchons à expliciter les causes potentielles de ces observations.
 
 ## Analyse au niveau des pays et causes potentielles
 
-Après avoir suivi l'évolution et les tendances des inégalités à travers le monde, nous nous sommes ensuite demandés pourquoi ces dernières ne font qu'accroitre d'années en années. 
+Après avoir suivi l'évolution et les tendances des inégalités à travers le monde, nous nous sommes ensuite demandé pourquoi ces dernières ne font qu'accroitre d'années en années. 
+
 Pour répondre à cette question, nous nous sommes dit qu'il serait intéressant de comparer l'évolution des capitaux privés et publics de plusieurs pays, de 1990 à 2019.
 
 
 ```{r warning=FALSE}
+
 #Comparaison de l'évolution des capitaux privés et public, de 1990 à 2019
+
 final_country_dataset%>%filter(Year>=1990, Pays!="Afrique du Sud" & Pays!="Japon" & Pays!="Mexique") %>% ggplot(aes(x=Year, group = Pays, color = Pays))+
 geom_line(aes(y=PatrimoineGouvernement/RevenuNational*100,linetype = "Public"))+
 geom_line(aes(y=PatrimoinePrivé/RevenuNational*100,linetype = "Privé"))+
@@ -699,18 +818,22 @@ Dans la continuité de notre analyse, nous avons ensuite décidé de comparer de
 Nous avons dans un premier temps comparé l'évolution de la part du revenu national des 1% les plus riches et des 50% les plus pauvres, dans chaque pays, de 1980 à 2019. L'objectif était de comparer l'évolution de la répartition du revenu national dans ces deux pays.
 
 ```{r}
+
 #Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs aux Etats-Unis, de 1980 à 2019
+
 final_country_dataset %>% filter(Pays == "Etats-Unis", Year >= 1980) %>%
-ggplot(aes(x=Year))+geom_line(aes(y=RevenuNationalTop1), color="red") +geom_line(aes(y=RevenuNationalBottom50), color="blue") + labs(title="Etats-Unis", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+ggplot(aes(x=Year))+geom_line(aes(y=RevenuNationalTop1), color="red") +geom_line(aes(y=RevenuNationalBottom50), color="blue") + geom_text(x=1987, y=18, label="Bottom 50%", color="blue") + geom_text(x=1987, y=11, label="Top 1%", color="red") + labs(title="Evolution répartition du RN aux US", y = "Part du RN (%)", x="Année") + theme_wsj()+ scale_colour_wsj("colors6") + theme(axis.title=element_text(), plot.title = element_text(size = 22, hjust = 1))
 
 ```
 
 Nous pouvons voir qu'aux Etats-Unis, les inégalités sont très marquées: depuis 1995, les 1% les plus riches gagnent plus que les 50% les plus pauvres, ce qui est impressionant. De plus, cette inégalité tend à s'agrandir car elle ne fait que monter depuis des années.
 
 ```{r}
+
 #Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
+
 final_country_dataset %>% filter(Pays == "France", Year >= 1980) %>%
-ggplot(aes(x=Year))+geom_line(aes(y=RevenuNationalTop1), color="red") +geom_line(aes(y=RevenuNationalBottom50), color="blue") + labs(title="France", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+ggplot(aes(x=Year))+geom_line(aes(y=RevenuNationalTop1), color="red") +geom_line(aes(y=RevenuNationalBottom50), color="blue") + geom_text(x=1985, y=21, label="Bottom 50%", color="blue") + geom_text(x=1985, y=9, label="Top 1%", color="red") + labs(title="Evolution répartition du RN en France", x="Année", y = "Part du RN (%)") + theme_wsj()+ scale_colour_wsj("colors6") + theme(axis.title=element_text(), plot.title = element_text(size = 22, hjust = 1))
 
 ```
 
@@ -718,19 +841,28 @@ En ce qui concerne la France, les inégalités sont beaucoup moins creusées, ma
 
 Nous avons ensuite décidé de comparé l'évolution d'un autre indicateur, la part du Patrimoine, des mêmes catégories de personnes, de 1980 à 2014 (nous n'avons pas de données plus récentes pour cet indicateur).
 
+
 ```{r}
-#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
+
+#Comparaison de l'evolution de la Parts du patrimoine des 1% supérieurs et des 50% inférieurs aux US, de 1980 à 2019
+
 final_country_dataset %>% filter(Pays == "Etats-Unis", Year >= 1980, Year <= 2014) %>%
-ggplot(aes(x=Year))+geom_bar(stat="identity",aes(y=PatrimoineTop1), color="red") +geom_bar(stat="identity", aes(y=PatrimoineBottom50), color="blue") + labs(title="Etats-Unis", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+ggplot(aes(x=Year))+geom_bar(stat="identity",aes(y=PatrimoineTop1), color="red") +geom_bar(stat="identity", aes(y=PatrimoineBottom50), color="blue") + geom_text(x=1981, y=31, label="Bottom 50%", color="blue") + geom_text(x=1987, y=31, label="Top 1%", color="red") + labs(title="Repartition du patrimoine aux US", x="Année", y = "Part du Patrimoine (%)") + theme_wsj()+ scale_colour_wsj("colors6") + theme(axis.title=element_text(), plot.title = element_text(size = 22, hjust = 1))
+
 ```
+
 Aux Etats-Unis, les 1% les plus riches ont 10 à 20 fois plus de patrimoine que les 50% les plus pauvres: c'est énorme. On voit bien qu'en 35 ans, la part dans le patrimoine des plus riches ne fait qu'augmenter, alors que celle des plus pauvres tend vers 0.
 
+
 ```{r}
-#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
+
+#Comparaison de l'evolution de la Parts du patrimoine des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
 final_country_dataset %>% filter(Pays == "France", Year >= 1980) %>%
-ggplot(aes(x=Year))+geom_bar(stat="identity",aes(y=PatrimoineTop1), color="red") +geom_bar(stat="identity", aes(y=PatrimoineBottom50), color="blue") + labs(title="France", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+ggplot(aes(x=Year))+geom_bar(stat="identity",aes(y=PatrimoineTop1), color="red") +geom_bar(stat="identity", aes(y=PatrimoineBottom50), color="blue") +  geom_text(x=1981, y=21, label="Bottom 50%", color="blue") + geom_text(x=1987, y=21, label="Top 1%", color="red") + labs(title="Répartition du patrimoine en France", x="Année", y = "Part du Patrimoine (%)") + theme_wsj()+ scale_colour_wsj("colors6") + theme(axis.title=element_text(), plot.title = element_text(size = 22, hjust = 1))
+
 
 ```
+
 En France, les 1% les plus riches ont en moyenne 2 à 3 plus de patrimoine que les 50% les plus pauvres, ce qui reste inégalitaire. En revanche, la différence est bien moins importante qu'aux Etats-Unis. POur ce qui est de l'évolution de cette inégalité, elle tend à s'accroitre aussi, mais moins vite qu'aux US.
 
 Une fois que nous avons constaté la différence du niveau d'inégalités et de leur évolution au sein de ces 2 pays, nous nous sommes demandés si cela pouvait avoir un impact sur leur croissance économique. En effet, l'objectif était de voir si les Etats-Unis avancent plus vite avec les plus riches, ou sont retardés par les plus pauvres, ou si cela ne change rien par rapport au français où la richesse est déjà mieux répartie.
@@ -738,16 +870,20 @@ Une fois que nous avons constaté la différence du niveau d'inégalités et de 
 Pour ce faire, nous avons comparé l'évolution du revenu national annuel par habitant dans les deux pays.
 
 ```{r}
-#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
-final_country_dataset %>% filter(Pays == "France", Year >= 1980) %>%
-ggplot(aes(x=Year))+geom_line(aes(y=RevenuNational), color="red") + labs(title="France", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+
+#Evolution du RN aux US
+
+final_country_dataset %>% filter(Pays == "Etats-Unis", Year >= 1980) %>%
+ggplot(aes(x=Year))+geom_line(aes(y=RevenuNational), color="red") + labs(title="Evolution du RN aux US", x="Année", y = "Revenu National ($)") + theme_wsj()+ scale_colour_wsj("colors6") + theme(axis.title=element_text(), plot.title = element_text(size = 22, hjust = 0.5))
 
 ```
 
 ```{r}
-#Comparaison de l'evolution de la Parts du revenu national des 1% supérieurs et des 50% inférieurs en France, de 1980 à 2019
-final_country_dataset %>% filter(Pays == "Etats-Unis", Year >= 1980) %>%
-ggplot(aes(x=Year))+ geom_line(aes(y=RevenuNational), color="red")  + labs(title="Etats-Unis", x="Année", y = "Part du revenu national (%)") + theme_wsj()+ scale_colour_wsj("colors6")
+
+#Evolution du RN en France
+
+final_country_dataset %>% filter(Pays == "France", Year >= 1980) %>%
+ggplot(aes(x=Year))+ geom_line(aes(y=RevenuNational), color="red")  + labs(title="Evolution du RN en France", x="Année", y = "Revenu National (€)") + theme_wsj()+ scale_colour_wsj("colors6") + theme(axis.title=element_text(), plot.title = element_text(size = 22, hjust = 0.5))
 
 ```
 
@@ -761,20 +897,39 @@ Nous pouvons donc en conclure que les inégalités au sein d'un pays développé
 
 ## Ce qu'on a appris des données
 
-Après cette étude du jeux de données World Inequality Database nous en avons appris beaucoup sur nos données. En effet, lors de notre premier aperçu avec le dataset entre la quantité de données numériques et la complexité des meta-data, nous avions du mal à comprendre le dataset. Mais après s'être plongé dans l'analyse et avoir produit toutes nos visualisations, nous comprenons l'intérets de chaque indicateur économique et de la connaissance qu'on peut en extraire grâce à des graphiques.
+Après cette étude du jeu de données World Inequality Database nous en avons appris beaucoup sur nos données. En effet, lors de notre premier aperçu avec le dataset entre la quantité de données numériques et la complexité des meta-data, nous avions du mal à comprendre le dataset. Mais après s'être plongé dans l'analyse et avoir produit toutes nos visualisations, nous comprenons l'intéret de chaque indicateur économique et de la connaissance qu'on peut en extraire grâce à des graphiques.
 
-La première chose que l'on a appris, ou plutôt confirmé, c'est qu'il y a effectivement beaucoup d'inégalités dans le monde. Egalement sans suprise, ces inégalités sont bien plus présentes dans les régions les moins développées. 
-Cependant après avoir analysé l'évolution des divers indicateurs d'inégalité au cours du temps, nous avons appris des choses plus intéressantes. Notemment nous avons observer que, bien que les régions plus pauvres soit plus inégalitaires, la tendance est au changement et les région dîtes plus dévoleppeées voient depuis quelques années leurs inégalités s'accroitrent.
+La première chose que l'on a appris, ou plutôt confirmé, c'est qu'il y a effectivement beaucoup d'inégalités dans le monde. Egalement sans surprise, ces inégalités sont bien plus présentes dans les régions les moins développées. 
+Cependant après avoir analysé l'évolution des divers indicateurs d'inégalité au cours du temps, nous avons appris des choses plus intéressantes. Notamment nous avons observé que, bien que les régions plus pauvres soit plus inégalitaires, la tendance est au changement et les région dîtes plus développées voient depuis quelques années leurs inégalités s'accroitre.
 
 Nous avons ensuite cherché les causes potentielles de ces inégalités et de leurs évolutions.
-En analysant l'évolution de la part des capitaux publics face aux capitaux privés nous avons trouvé une cause potentielle. En effet, depuis 1990 la part des capitaux publics ne cesse de diminuer et cela expliquerait le manque d'action des gouvernements par manque de mmoyens.
+En analysant l'évolution de la part des capitaux publics face aux capitaux privés nous avons trouvé une cause potentielle. En effet, depuis 1990 la part des capitaux publics ne cesse de diminuer et cela expliquerait le manque d'action des gouvernements par manque de moyens.
 
-Enfin, dans notre étude comparative entre deux pays considérés tout les deux comme "riche" ou "développé" la France et les Etats Unis, nous pensions trouver peut de différence. A notre grandre suprise, les USA sont ont vue leurs inégalités croitrent de façon exponentielles tandis qu'en France il y a eut peu de changement.
+Enfin, dans notre étude comparative entre deux pays considérés tous les deux comme "riche" ou "développé" la France et les Etats Unis, nous pensions trouver peut de différence. A notre grande surprise, les USA sont ont vue leurs inégalités croitrent de façon exponentielles tandis qu'en France il y a eut peu de changement.
 
 Au dela de la compréhension de nos données cette étude nous a permis de mieux comprendre certaines réalités économiques.
 
-## Les difficultés rencontrées
+## Les difficultés rencontrées et critique du dataset
+
+Tout au long du projet, nous avons rencontrés plusieurs difficultés.
+
+Premièrement, comme nous venons de le dire, nous avons pu faire un constat sur les inégalités dans le monde et leurs évolutions, mais malheureusement le dataset ne nous a pas permis de comprendre la cause de ces inégalités, ce qui est dommage, voir frustrant. Nous aurions aimé pouvoir explorer et découvrir la cause de ces inégalités pour peut-être comprendre comment les résoudre.
+
+Deuxièmement, le dataset était parfois incomplet. En effet, il y a peu de pays, si ce n’est aucun, où nous avions toutes les données pour chaque indicateur, chaque année. Globalement, il manquait beaucoup de données pour les pays pauvres ou en développement, ce qui est dommage quand on parle d’inégalités et de leurs évolutions. De plus, même pour des pays plus développés, les données n’étaient parfois pas à jour s’arrêtant vers les années 2010 par exemple. Ce manque de données nous a parfois posé problème lorsque nous voulions comparer l’évolution de plusieurs pays, situés partout dans le monde.
+
+Enfin, nous avons rencontré beaucoup de difficultés lors du traitement du dataset. En effet, le dataset de base était très complexe : le format du dataset n’était pas adapté à la visualisation de données (une variable pour chaque indicateur dans chaque pays), les variables avaient des noms inintelligibles, et même les métas-données étaient compliquées à comprendre. De plus, tout était rédigé en anglais, ce qui nous a parfois posé problème lorsque les indicateurs nécessitaient des notions d’économie. Nous avons donc dû faire un gros travail de traitement de données afin de pouvoir s’approprier les données et créer nos propres datasets, afin de commencer nos premières visualisations. Le dataset est probablement plus déstiné à des scientifiques, chercheurs, qui veulent faire un travail approfondi sur plusieurs mois.
+
+## Expérience avec PowerBI
+
+
+A la fin de notre TD PowerBI, nous avons identifiés plusieurs avantages et inconvénients concernant cet outil.
+
+Concernant les avantages, nous avons trouvé que l'interface est très intuitive, elle permet de réaliser des visuels très esthétiques, tout cela rapidement et simplement. Nous pensons que c'est un outil adapté pour explorer un dataset, et anticiper un peu les différentes visualisations possibles.
+
+En revanche, nous trouvons que cet outil comporte plusieurs inconvénients. Les possibilités de personnalisation d'un visuel sont limitées par rapport à un langage de programmation comme R. Ainsi, il devient compliqué de créer un visuel un peu plus travaillé et complexe. Aussi, nous avons constaté le manque de puissance de l'outil quand il s'agit de traiter un dataset. Comme nous l'avons dit, notre dataset nécessitait un gros travail en amont avant de pouvoir commencer nos premières visualisations, et nous n'aurions jamais pu faire ce traitement sur PowerBI. Nous avons dû exporter notre dataset créé à partir de R, puis l'importer sur PowerBI. Dans notre cas, cela ne posait pas de problème, étant donné que quasiment l'intégralité du projet s'est déroulé avec le langage R. En revanche, cela peut poser problème car ce logiciel vise à simplifier la Data Analyse, pour la rendre accessible à tous, même ceux qui ne savent pas coder. Cependant, quelqu'un qui ne sait pas coder ne pourra donc pas traiter correctement son dataset, si besoin.
 
 ## Retours d'expérience
 
-Edgar : "Lors de ce projet (et de cette matière) j'ai appris l'importance de la visualisation et de sa capacité à représenter ou déformer une réalité. Ayant déjà un peu d'expérience en data j'ai orienté notre choix de projet vers un dataset un peu plus compliqué à exploiter et nous l'avons vite regretter. Cependant, à partir de ces données difficiles à comprendre, l'intérêt de la visualisation n'en était que plus marqué et l'analyse s'est révélé plus intéressante que prévue."
+Edgar : "Lors de ce projet (et de cette matière) j'ai appris l'importance de la visualisation et de sa capacité à représenter ou déformer une réalité. Ayant déjà un peu d'expérience en data j'ai orienté notre choix de projet vers un dataset un peu plus compliqué à exploiter et nous l'avons vite regretter. Cependant, à partir de ces données difficiles à comprendre, l'intérêt de la visualisation n'en était que plus marqué et l'analyse s'est révélée plus intéressante que prévue."
+
+Baptiste: "Durant ce projet, j'ai appris à analyser des données et en tirer des informations pertinentes sur le monde qui nous entoure, non visibles au premier abord, au travers de différents graphiques ou visualisations. J'aurais aimé, avec plus de temps, comprendre comment utiliser les résultats trouvés, comme dans une situation réelle en entreprise par exemple, pour aller plus loin que ce projet où nous avons juste fait un constat à partir de nos données."
