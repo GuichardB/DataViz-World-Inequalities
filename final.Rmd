@@ -26,7 +26,7 @@ knitr::opts_chunk$set(echo = TRUE)
 - [Conclusion](#conclusion)
   1. [Ce qu'on a appris des données](#ce-qu'on-a-appris-des-données)
   2. [Les difficultés rencontrées](#les-difficultés-rencontrées)
-  3. [Retour d'expérience personnel](#retour-d'expérience-personnel)
+  3. [Retours d'expérience](#retours-d'expérience)
 
 ***
 
@@ -761,6 +761,20 @@ Nous pouvons donc en conclure que les inégalités au sein d'un pays développé
 
 ## Ce qu'on a appris des données
 
+Après cette étude du jeux de données World Inequality Database nous en avons appris beaucoup sur nos données. En effet, lors de notre premier aperçu avec le dataset entre la quantité de données numériques et la complexité des meta-data, nous avions du mal à comprendre le dataset. Mais après s'être plongé dans l'analyse et avoir produit toutes nos visualisations, nous comprenons l'intérets de chaque indicateur économique et de la connaissance qu'on peut en extraire grâce à des graphiques.
+
+La première chose que l'on a appris, ou plutôt confirmé, c'est qu'il y a effectivement beaucoup d'inégalités dans le monde. Egalement sans suprise, ces inégalités sont bien plus présentes dans les régions les moins développées. 
+Cependant après avoir analysé l'évolution des divers indicateurs d'inégalité au cours du temps, nous avons appris des choses plus intéressantes. Notemment nous avons observer que, bien que les régions plus pauvres soit plus inégalitaires, la tendance est au changement et les région dîtes plus dévoleppeées voient depuis quelques années leurs inégalités s'accroitrent.
+
+Nous avons ensuite cherché les causes potentielles de ces inégalités et de leurs évolutions.
+En analysant l'évolution de la part des capitaux publics face aux capitaux privés nous avons trouvé une cause potentielle. En effet, depuis 1990 la part des capitaux publics ne cesse de diminuer et cela expliquerait le manque d'action des gouvernements par manque de mmoyens.
+
+Enfin, dans notre étude comparative entre deux pays considérés tout les deux comme "riche" ou "développé" la France et les Etats Unis, nous pensions trouver peut de différence. A notre grandre suprise, les USA sont ont vue leurs inégalités croitrent de façon exponentielles tandis qu'en France il y a eut peu de changement.
+
+Au dela de la compréhension de nos données cette étude nous a permis de mieux comprendre certaines réalités économiques.
+
 ## Les difficultés rencontrées
 
-## Retour d'expérience personnel
+## Retours d'expérience
+
+Edgar : "Lors de ce projet (et de cette matière) j'ai appris l'importance de la visualisation et de sa capacité à représenter ou déformer une réalité. Ayant déjà un peu d'expérience en data j'ai orienté notre choix de projet vers un dataset un peu plus compliqué à exploiter et nous l'avons vite regretter. Cependant, à partir de ces données difficiles à comprendre, l'intérêt de la visualisation n'en était que plus marqué et l'analyse s'est révélé plus intéressante que prévue."
