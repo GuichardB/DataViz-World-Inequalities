@@ -427,6 +427,7 @@ La deuxième fonctionnalité proposée par notre dashboard permet de comparer ce
 Par exemple, on peut ici observer la différence entre l'Afrique et l'Europe de l'Est quand à l'évolution de la part des 1% plus riche dans le revenu national. On constaste bien ici que la tendance est à la baisse en Afrique et à la hausse en Europe de l'Est.
 
 ![Deuxièmes visu shiny](images/shiny2.png)
+
 Grâce à notre Shiny nous pouvons rapidement nous rendre compte des variables intéressante à étudier et des éventuelles comparaisons à effectuer.
 
 
@@ -462,6 +463,8 @@ ggplot(aes(x=NI,y=PTNIB50_in_percent))+geom_point(aes(color=Region))+ labs(title
 
 ### L'évolution
 
+Après avoir étudier l'état actuel des inégalités dans le monde, on se pose la question de savoir si il en a toujours été ainsi et si certaines tendances se dégagent depuis toutes ces années.
+
 ```{r}
 world <- filter(final_region_dataset, Region== "World")
 world <- melt(world[,c('Year','PTNIT10_in_percent','PTNIM40_in_percent','PTNIB50_in_percent')],id.vars =1)
@@ -472,23 +475,36 @@ labs(title="Evolution de la part de chaque classe dans le revenu national dans l
 rm(world)
 ```
 
-```{r warning=FALSE}
-#Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019
-final_region_dataset %>% filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
-
-```
-
-```{r warning=FALSE}
-#Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
-final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
-
-```
+Afin d'avoir une première idée de l'évolution de ces inégalités depuis 1980 nous avons réaliser une représentation de l'évolution de la part dans le revenu national pour chaque tranche de revenu.
+On observe que, au niveau mondial il y a autant d'inégalités dans le monde en 1980 qu'en 2019. On observe une légére augmentation dans les années 2000 mais qui est rapidement corrigées.
 
 ```{r}
 final_region_dataset %>% filter(Region == "World") %>%
 ggplot(aes(x=Year))+geom_line(aes(y=PTNIT1_in_percent, color="Top 1%"))+geom_line(aes(y=PTNIB50_in_percent, color="Bot 50%")) + labs(title="Evolution de la part du revenu national des Top 1% et Bot 50% de 1980 à 2019", x="Années", y = "Part du revenu national (%)",color = "Classes" )+ scale_x_continuous(limits = c(1980,2019), expand = c(0, 0)) + scale_y_continuous(limits = c(5,25), expand = c(0, 0))
 ```
 
+Afin de confirmer cette observation, nous étudions maintenant plus précisement l'évolution de la part de 50% plus pauvres VS les 1% plus riches.
+On observe ici que les très riches se sont plus enrichis avant les années 2000 et que les plus pauvres commence a gagner plus depuis 2006.
+La question que l'on est ammené à se poser ensuite : Qu'en est-il lorsque l'on regarde plus précisement chaque région ?
+
+```{r warning=FALSE}
+#Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019
+final_region_dataset %>% filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIT10_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Top 10% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+```
+
+Ici nous cherchons à étudier l'évolution de la part de 10% plus riches dans le revenu national entre 1980 et 2019.
+On observe que dans les régions dîtes "plus développées" tel que l'Europe ou l'Amérique du Nord, cette part est en augmentation constante depuis 1980.
+A contrario, dans les régions dîtes "moins développées" tel que l'Afrique ou l'Asie, cette part commence à baisser depuis 2010.
+
+```{r warning=FALSE}
+#Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019
+final_region_dataset %>%filter(Region!="World")%>% ggplot(aes(x=Year, y=PTNIB50_in_percent, group = Region, color = Region))+geom_line() + labs(title="Evolution de la part des Bottom 50% dans le revenu national, de 1980 à 2019", x="Année", y = "Part du revenu national (%)")+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
+```
+
+Afin d'avoir une analyse plus précise nous allons maintenant observer l'évolution de cette part chez les 50% plus pauvres.
+On observe qu'a première vu, dans la plupart des régions les plus pauvres gagnent gagnent de moins en moins. 
+Cependant, on remarque que depuis les années 2000, cette décroissance est de moins en moins forte et dans certaines régions comme en Afrique, les plus pauvres commencent a s'enrichir.
+On en conclus qu'il y a bien des tendances que se dessinent d'années en années et on a donc cherché un moyen d'étudier plus précisement ces variations.
 
 ```{r message = FALSE, warning = FALSE}
 final_region_dataset %>% 
@@ -497,7 +513,12 @@ mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change =
 ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de croissance du National Income dans le monde", x="Années", y = "Taux de croissance NI")
 ```
 
+Afin de faire ressortir de nos données le taux de croissance d'e chaque indicateur'un chaque année, on créer une nouvelle colonne qui prend la valeur de l'indicateur voulu une année et lui soustrait sa valeur de l'année précendente. On ajout ensuite le calcul du pourcentage de ce changement par rapport à l'année précendente et on obtient le taux de croissance de cet indicteur.
+Ici on test cette approche sur l'évolution du revenu national dans le monde.
+On observe notamment qu'il y a eut un boost de croissance à l'an 2000 qui commence a diminuer.
+Le crash de 2006, bien que lisser par la courbe moyenne reste bien visible.
 
+Quand est il de cette observation pour chaque région ?
 
 ```{r message = FALSE, warning = FALSE}
 tempEE <- final_region_dataset %>% 
@@ -525,12 +546,23 @@ mutate(Previous_Year = lag(NI, 1), Change = NI - Previous_Year, Percent_Change =
 ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance du National Income", x="Années", y = "Taux de croissance NI",color = "Régions" )+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
 ```
+
+
+Sur cette évolution lissé du taux de croissance du revenu national par région, on oberve que les régions suivent toutes la tendance mondiale. Cependant certaines régions comme les Amériques ou l'Asie décroient plus rapidement comparées à des régions comme l'Europe ou la croissance semble repartir.
+
+Quand est-it de cette évolution de la croissance dans les différentes tranches de la population ?
+
 ```{r message = FALSE, warning = FALSE}
 final_region_dataset %>% 
 filter(Region=="World") %>%
 mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
 ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de l'enrichissement des Top 1% dans le monde", x="Années", y = "Taux de croissance de la part dans le revenu nationa")
 ```
+
+Ici on cherche à étudier l'évolution de la vitesse à laquelle les 1% plus riches s'enrichisse.
+On observe que depuis les années 2000 cette vitesse a diminuée mais qu'elle tent peut être à repartir.
+
+Qu'en est-il au niveau de chaque région ?
 
 ```{r  message = FALSE, warning = FALSE}
 tempEE <- final_region_dataset %>% 
@@ -558,12 +590,22 @@ mutate(Previous_Year = lag(PTNIT1_in_percent, 1), Change = PTNIT1_in_percent - P
 ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(color="Eastern Europe"), se = FALSE)+ geom_smooth(data=tempWE, aes(color="Western Europe"), se = FALSE)+ geom_smooth(data=tempAs, aes(color="Asia"), se = FALSE)+ geom_smooth(data=tempAf, aes(color="Africa"), se = FALSE)+ geom_smooth(data=tempOc, aes(color="Oceania"), se = FALSE)+ geom_smooth(data=tempLA, aes(color="Latin America"), se = FALSE)+ geom_smooth(data=tempNA, aes(color="Northern America"), se = FALSE)+ labs(title="Evolution du taux de croissance de l'enrichissement des Top 1%", x="Années", y = "Taux de croissance de l'enrichissement",color = "Régions" )+theme_hc()+ scale_colour_hc()+theme(legend.position = "right")
 rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
 ```
+
+Sur cette évolution lissé du taux de croissance des 1% plus riches par région, on oberve que les régions suivent toutes la tendance mondiale. Cependant, dans certaines régions comme l'Asie ou l'Océanie la vitesse d'enrichissement des plus riches semble récement s'être réaccelérée.
+
+Quand est-il de cette évolution de la croissance chez les 50% plus pauvres de la population ?
+
 ```{r message = FALSE, warning = FALSE}
 final_region_dataset %>% 
 filter(Region=="World") %>%
 mutate(Previous_Year = lag(PTNIB50_in_percent, 1), Change = PTNIB50_in_percent - Previous_Year, Percent_Change = Change/Previous_Year*100) %>%
 ggplot(aes(x = Year, y = Percent_Change)) + geom_line() + geom_smooth()+ labs(title="Evolution du taux de l'enrichissement des Bottom 50% dans le monde", x="Années", y = "Taux de croissance de la part dans le revenu nationa")
 ```
+
+Ici on cherche à étudier l'évolution de la vitesse à laquelle les 50% plus pauvres s'enrichisse.
+On observe une courbe opposée à celle des 1% plus riches, ce qui est logique.
+
+Qu'en est-il au niveau de chaque région ?
 
 ```{r message = FALSE, warning = FALSE}
 tempEE <- final_region_dataset %>% 
@@ -592,6 +634,12 @@ ggplot(NULL, aes(x = Year, y = Percent_Change)) + geom_smooth(data=tempEE, aes(c
 rm(tempEE, tempWE, tempAs, tempAf, tempOc, tempLA, tempNA)
 ```
 
+Sur cette évolution lissé du taux de croissance des 50% plus pauvres par région, on oberve que les régions suivent toutes la tendance mondiale. Mais ici encore certaines régions comme l'Asie ou l'Océanie voit la vitesse d'enrichissement des plus pauvres s'accelérée récement.
+
+Au travers de cette première étape, nous avons pu établir la présence d'inégalités dans les différentes tranches de population et leur localisation dans les diverses régions du monde. 
+De plus, ous avons pu étudier l'évolution de ces inégalités au cours du temps et les éventuelles tendances qui s'en dégageaient.
+
+Désormais, grâce à l'extension de notre dataset au niveau des pays nous cherchons à expliciter les causes potentielles de ces observations.
 
 ## Analyse au niveau des pays et causes potentielles
 
