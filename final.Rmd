@@ -1,8 +1,9 @@
 ---
 title: "Rapport de Projet IF36 - Les inégalités de richesses dans le monde"
 output: 
-    rmarkdown::github_document:
-        theme: lumen
+    html_document:
+        keep_md: true
+    theme: lumen
 ---
 
 ```{r setup, include=FALSE}
