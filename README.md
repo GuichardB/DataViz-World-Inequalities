@@ -1,6 +1,6 @@
 # DataViz - World Inequalities
 
-<img src="images/intro.png" alt="intro_image" width="750"/>
+<img src="images/intro.png" alt="intro_image" width="500"/>
 
 This group project was conducted as part of a Data Visualization course at the University of Technology of Troyes.
 
